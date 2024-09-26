@@ -5,7 +5,9 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "start:backend": "cd apps/backend && nodemon server.mjs",
+    "start:frontend": "cd apps/frontend && dev"
   },
   "devDependencies": {
     "prettier": "^3.2.5",
