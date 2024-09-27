@@ -14,7 +14,7 @@
     "NodeJS",
     "ExpressJS",
     "MongoDB",
-    "Moongose"
+    "Mongoose"
   ],
   "author": "Alejandro Gómez, Juana Jaramillo",
   "license": "ISC",

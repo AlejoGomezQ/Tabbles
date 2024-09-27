@@ -24,21 +24,21 @@ Tabbles es una aplicación web diseñada para generar y gestionar tablas nutrici
 
    ```bash
    git clone https://github.com/tu-usuario/nombre-del-repositorio.git
-   cd nombre-del-repositorio`
+   cd nombre-del-repositorio
    ```
 
 2. Instala las dependencias del backend:
 
    ```bash
    cd apps/backend
-   npm install`
+   npm install
    ```
 
 3. Instala las dependencias del frontend:
 
    ```bash
    cd ../frontend
-   npm install`
+   npm install
    ```
 
 ## Ejecución
@@ -46,5 +46,5 @@ Tabbles es una aplicación web diseñada para generar y gestionar tablas nutrici
 Desde la raíz del proyecto ejecutar:
 
 ```bash
-npm run dev`
+npm run dev
 ```

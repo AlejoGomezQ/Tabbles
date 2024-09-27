@@ -1,22 +1,24 @@
 import express, { json } from "express";
-import { connect } from "mongoose";
 import { config } from "dotenv";
-import nutritionalRoutes from "./routes/nutritionalRoutes.mjs";
+import tabblesRoutes from "./routes/tabblesRoutes.mjs";
+import databaseInstance from "./database.mjs";
 
 config();
 
 const app = express();
+const PORT = process.env.PORT || 5000;
+
 app.use(json());
 
-// Conexión a MongoDB
-connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.log(err));
+databaseInstance
+  .connect()
+  .then(() => {
+    app.use("/api/tabbles-tables", tabblesRoutes);
 
-// Rutas
-app.use("/api/nutritional-tables", nutritionalRoutes);
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Failed to connect to MongoDB:", err);
+  });
