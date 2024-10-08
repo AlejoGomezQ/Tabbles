@@ -7,12 +7,12 @@ export default function HomePage() {
         <h1 className="font-titulos font-bold text-h1 text-center">
           Generador de tablas nutricionales
         </h1>
-        <div className="px-24 py-9 bg-gris rounded-xl">
+        <div className="px-24 py-9 bg-[#CECECE] rounded-xl">
           <h3 className="font-titulos font-bold text-h3 text-center">
             Ingresa ingredientes a una base de datos de materias primas{" "}
           </h3>
         </div>
-        <div className="px-24 py-9 bg-gris rounded-xl">
+        <div className="px-24 py-9 bg-[#CECECE] rounded-xl">
           <h3 className="font-titulos font-bold text-h3 text-center">
             Genera tablas nutricionales en varios formatos con solo un clic.{" "}
           </h3>
@@ -22,8 +22,8 @@ export default function HomePage() {
             <h3 className="font-titulos font-bold text-h3 text-center">
               Registrate para comenzar
             </h3>
-            <Link href="/register">
-              <button className="border font-parrafos text-p text-center text-blanco bg-negro-claro hover:bg-blanco hover:border-b-negro-claro hover:text-negro-claro py-4 px-6 rounded-xl mt-4">
+            <Link href="pages/register">
+              <button className="border text-center text-white bg-[#212121] hover:bg-white hover:border-[#212121] hover:text-[#212121] py-4 px-6 rounded-xl mt-4">
                 Registrarse
               </button>
             </Link>
@@ -32,8 +32,8 @@ export default function HomePage() {
             <h3 className="font-titulos font-bold text-h3 text-center">
               Si ya tienes cuenta, inicia sesion
             </h3>
-            <Link href="/login">
-              <button className="border font-parrafos text-p text-center text-blanco bg-negro-claro hover:bg-blanco hover:border-b-negro-claro hover:text-negro-claro py-4 px-6 rounded-xl mt-4">
+            <Link href="pages/login">
+              <button className="border text-center text-white bg-[#212121] hover:bg-white hover:border-[#212121] hover:text-[#212121] py-4 px-6 rounded-xl mt-4">
                 Iniciar Sesión
               </button>
             </Link>
