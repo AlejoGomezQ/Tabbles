@@ -31,8 +31,8 @@ export default function RegisterForm() {
   };
 
   return (
-    <section className="w-full lg:w-1/2 flex items-center justify-center">
-      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-xl shadow-lg">
+    <section className="lg:w-1/2 flex items-center justify-center rounded-tl-xl rounded-bl-xl bg-white shadow-lg">
+      <div className="max-w-md w-full space-y-8 p-8">
         <div>
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
             Crear una cuenta
