@@ -8,7 +8,9 @@
 h1, h2, h3 {
     font-family: 'Montserrat', sans-serif;
 }
-
+body{
+    background-color: #F5F5F5;
+}
 body, p {
     font-family: 'Roboto', sans-serif;
 }
