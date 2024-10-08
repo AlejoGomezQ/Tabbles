@@ -22,7 +22,7 @@ export default function LoginForm() {
     try {
       await login(email, password);
       // Redirect or update UI on successful login
-      router.push("/pages/dashboard");
+      /* router.push("/pages/dashboard"); */
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "An error occurred during login"

@@ -7,6 +7,8 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 interface User {
   id: string;
@@ -35,10 +37,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
-    // Check for token in localStorage on initial load
-    const storedToken = localStorage.getItem("token");
+    // Check for token in cookies on initial load
+    const storedToken = Cookies.get("token");
     if (storedToken) {
       setToken(storedToken);
       // TODO: Fetch user data using the token
@@ -61,10 +64,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       }
 
       const data = await response.json();
-      console.log(data);
       setUser(data.user);
       setToken(data.token);
-      localStorage.setItem("token", data.token);
+      Cookies.set("token", data.token, { expires: 7 }); // Set cookie to expire in 7 days
+      router.push("/dashboard");
     } catch (error) {
       console.error("Login error:", error);
       throw error;
@@ -72,10 +75,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   const register = async (
-    name: String,
-    lastName: String,
-    email: String,
-    password: String
+    name: string,
+    lastName: string,
+    email: string,
+    password: string
   ) => {
     try {
       const response = await fetch("/api/register", {
@@ -94,7 +97,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       const data = await response.json();
       setUser(data.user);
       setToken(data.token);
-      localStorage.setItem("token", data.token);
+      Cookies.set("token", data.token, { expires: 7 }); // Set cookie to expire in 7 days
+      router.push("/dashboard");
     } catch (error) {
       console.error("Registration error:", error);
       throw error;
@@ -104,7 +108,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const logout = () => {
     setUser(null);
     setToken(null);
-    localStorage.removeItem("token");
+    Cookies.remove("token");
+    router.push("/login");
   };
 
   return (
