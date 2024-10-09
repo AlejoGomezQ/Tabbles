@@ -101,7 +101,7 @@ export default function RegisterForm() {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#00C0A3] hover:bg-[#93E9BE] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#93E9BE]"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#00C0A3] hover:bg-[#93E9BE] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#93E9BE] transition ease-in"
             >
               Registrarse
             </button>
@@ -112,7 +112,7 @@ export default function RegisterForm() {
             ¿Ya tienes una cuenta?{" "}
             <Link
               href="/pages/login"
-              className="font-medium text-[#00C0A3] hover:text-[#93E9BE]"
+              className="font-medium text-[#00C0A3] hover:text-[#93E9BE] transition ease-in"
             >
               Iniciar sesión
             </Link>
