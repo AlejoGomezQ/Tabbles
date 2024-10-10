@@ -9,8 +9,11 @@ import {
 } from "../controllers/RawMaterialsController.mjs";
 
 import { createUser, login } from "../controllers/UsersController.mjs";
+import { authenticateToken } from "../middleware/auth.mjs";
 
 const router = Router();
+
+router.use(authenticateToken);
 
 // Rutas para iniciar sesión y registrarse
 router.post("/register", createUser);

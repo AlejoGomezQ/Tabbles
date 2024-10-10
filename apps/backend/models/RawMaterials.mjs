@@ -25,8 +25,15 @@ const RawMaterialSchema = new mongoose.Schema(
     calcium: Number,
     zinc: Number,
     water: Number,
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   { timestamps: true }
 );
+
+RawMaterialSchema.index({ name: 1, user: 1 }, { unique: true });
 
 export default mongoose.model("RawMaterial", RawMaterialSchema);

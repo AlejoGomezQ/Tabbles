@@ -1,36 +1,37 @@
 "use client";
 
 import React, { useState } from "react";
-import { Ingredient } from "../models/ingredient";
+import { RawMaterial } from "../models/rawMaterial";
+import { spanishLabels } from "../utils/spanishLabels";
 
-export default function IngredientsTable() {
-  const [newIngredient, setNewIngredient] = useState<Ingredient>({
+export default function RawMaterialsTable() {
+  const [newIngredient, setNewIngredient] = useState<RawMaterial>({
     name: "",
-    calories: "",
-    protein: "",
-    totalFat: "",
-    carbohydrates: "",
-    saturatedFat: "",
-    transFat: "",
-    cholesterol: "",
-    sodium: "",
-    dietaryFiber: "",
-    sugar: "",
-    addedSugar: "",
-    vitaminA: "",
-    vitaminC: "",
-    vitaminD: "",
-    iron: "",
-    calcium: "",
-    zinc: "",
-    water: "",
+    calories: undefined,
+    protein: undefined,
+    totalFat: undefined,
+    carbohydrates: undefined,
+    saturatedFat: undefined,
+    transFat: undefined,
+    cholesterol: undefined,
+    sodium: undefined,
+    dietaryFiber: undefined,
+    sugar: undefined,
+    addedSugar: undefined,
+    vitaminA: undefined,
+    vitaminC: undefined,
+    vitaminD: undefined,
+    iron: undefined,
+    calcium: undefined,
+    zinc: undefined,
+    water: undefined,
   });
 
-  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const [RawMaterials, setRawMaterials] = useState<RawMaterial[]>([]);
 
   return (
     <section className="p-8 border-t">
-      <h2 className="text-2xl font-bold mb-6">Tabla de Ingredientes</h2>
+      <h2 className="text-2xl font-bold mb-6">Tabla de materia primas</h2>
       <div className="overflow-x-auto">
         <div className="max-h-64 overflow-y-auto">
           <table className="min-w-full divide-y divide-gray-200">
@@ -41,20 +42,20 @@ export default function IngredientsTable() {
                     key={key}
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
-                    {key}
+                    {spanishLabels[key]}
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {ingredients.map((ingredient, index) => (
+              {RawMaterials.map((ingredient, index) => (
                 <tr key={index}>
-                  {Object.values(ingredient).map((value, i) => (
+                  {Object.entries(ingredient).map(([key, value]) => (
                     <td
-                      key={i}
+                      key={key}
                       className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
                     >
-                      {value}
+                      {value as React.ReactNode}
                     </td>
                   ))}
                 </tr>

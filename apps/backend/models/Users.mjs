@@ -20,6 +20,12 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    rawMaterials: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "RawMaterial",
+      },
+    ],
   },
   { timestamps: true }
 );

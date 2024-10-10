@@ -9,13 +9,8 @@ import React, {
 } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-
-interface User {
-  id: string;
-  name: string;
-  lastName: string;
-  email: string;
-}
+import { User } from "../models/user";
+import { RawMaterial } from "../models/rawMaterial";
 
 interface AuthContextType {
   user: User | null;
@@ -28,6 +23,8 @@ interface AuthContextType {
     password: string
   ) => Promise<void>;
   logout: () => void;
+  addRawMaterial: (rawMaterial: RawMaterial) => Promise<void>;
+  getAllRawMaterials: () => Promise<RawMaterial[]>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -40,13 +37,34 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const router = useRouter();
 
   useEffect(() => {
-    // Check for token in cookies on initial load
     const storedToken = Cookies.get("token");
     if (storedToken) {
       setToken(storedToken);
-      // TODO: Fetch user data using the token
+      // Fetch user data using the token
+      fetchUserData(storedToken);
     }
   }, []);
+
+  const fetchUserData = async (token: string) => {
+    try {
+      const response = await fetch("/api/user", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        const userData = await response.json();
+        setUser(userData);
+      } else {
+        // If fetching user data fails, clear the token
+        Cookies.remove("token");
+        setToken(null);
+        setUser(null);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
 
   const login = async (email: string, password: string) => {
     try {
@@ -66,8 +84,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       const data = await response.json();
       setUser(data.user);
       setToken(data.token);
-      Cookies.set("token", data.token, { expires: 7 }); // Set cookie to expire in 7 days
-      router.push("/dashboard");
+      Cookies.set("token", data.token, { expires: 7 });
+      router.push("/pages/dashboard");
     } catch (error) {
       console.error("Login error:", error);
       throw error;
@@ -97,8 +115,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       const data = await response.json();
       setUser(data.user);
       setToken(data.token);
-      Cookies.set("token", data.token, { expires: 7 }); // Set cookie to expire in 7 days
-      router.push("/dashboard");
+      Cookies.set("token", data.token, { expires: 7 });
+      router.push("/pages/login");
     } catch (error) {
       console.error("Registration error:", error);
       throw error;
@@ -109,11 +127,76 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     setUser(null);
     setToken(null);
     Cookies.remove("token");
-    router.push("/login");
+    router.push("/pages/login");
+  };
+
+  const addRawMaterial = async (rawMaterial: RawMaterial) => {
+    const currentToken = token || Cookies.get("token");
+    if (!currentToken) {
+      throw new Error("No authentication token found");
+    }
+
+    try {
+      const response = await fetch("/api/add-raw-material", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentToken}`,
+        },
+        body: JSON.stringify(rawMaterial),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to add raw material");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error adding raw material:", error);
+      throw error;
+    }
+  };
+
+  const getAllRawMaterials = async () => {
+    const currentToken = token || Cookies.get("token");
+    if (!currentToken) {
+      throw new Error("No authentication token found");
+    }
+
+    try {
+      const response = await fetch("/api/get-all-raw-materials", {
+        headers: {
+          Authorization: `Bearer ${currentToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to fetch raw materials");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching raw materials:", error);
+      throw error;
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, register, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        token,
+        login,
+        register,
+        logout,
+        addRawMaterial,
+        getAllRawMaterials,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
