@@ -40,7 +40,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     const storedToken = Cookies.get("token");
     if (storedToken) {
       setToken(storedToken);
-      // Fetch user data using the token
       fetchUserData(storedToken);
     }
   }, []);
@@ -56,7 +55,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         const userData = await response.json();
         setUser(userData);
       } else {
-        // If fetching user data fails, clear the token
+        console.error("Failed to fetch user data:", await response.text());
         Cookies.remove("token");
         setToken(null);
         setUser(null);
@@ -137,7 +136,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
 
     try {
-      const response = await fetch("/api/add-raw-material", {
+      const response = await fetch("/api/raw-material", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -159,7 +158,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  const getAllRawMaterials = async () => {
+  const getAllRawMaterials = async (): Promise<RawMaterial[]> => {
     const currentToken = token || Cookies.get("token");
     if (!currentToken) {
       throw new Error("No authentication token found");
