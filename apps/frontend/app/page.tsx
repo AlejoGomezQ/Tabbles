@@ -42,7 +42,6 @@ export default function HomePage() {
       </div>
       <div className="flex items-center justify-center">
         <img
-          className=""
           src="/images/imagen_principal.png"
           alt="imagen principal"
         ></img>

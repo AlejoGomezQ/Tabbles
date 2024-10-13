@@ -2,9 +2,7 @@
 
 import React, { useState } from "react";
 
-export default function SubHeader() {
-  const [activeTab, setActiveTab] = useState("ingredients");
-
+export default function SubHeader({ activeTab,setActiveTab }) {
   return (
     <>
       <section className="flex border-b rounded-t-xl">

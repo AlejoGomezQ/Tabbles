@@ -120,14 +120,14 @@ export default function RawMaterialsForm() {
           <p className="text-sm text-gray-500">
             Llenar los campos según la cantidad en 100 g
           </p>
-          <div className="grid grid-cols-9 gap-4">
+          <div className="grid grid-rows-2 grid-cols-9 gap-4">
             {Object.entries(newRawMaterial).map(
               ([key, value]) =>
                 key !== "name" && (
                   <div key={key}>
                     <label
                       htmlFor={key}
-                      className="block text-sm font-medium text-gray-700"
+                      className="block text-sm font-medium text-gray-700 "
                     >
                       {spanishLabels[key]}
                     </label>

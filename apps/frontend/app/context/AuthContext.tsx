@@ -136,7 +136,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
 
     try {
-      const response = await fetch("/api/raw-material", {
+      const response = await fetch("/api/add-raw-material", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
