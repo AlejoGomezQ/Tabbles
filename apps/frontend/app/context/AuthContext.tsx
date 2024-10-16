@@ -81,8 +81,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       }
 
       const data = await response.json();
-      setUser(data.user);
+      const userData: User = {
+        id: data.user.id,
+        name: data.user.name,
+        lastName: data.user.lastName,
+        email: data.user.email,
+      };
+
+      setUser(userData);
       setToken(data.token);
+
       Cookies.set("token", data.token, { expires: 7 });
       router.push("/pages/dashboard");
     } catch (error) {

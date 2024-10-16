@@ -14,9 +14,7 @@ export default function LoginForm() {
 
   const { login } = useAuth();
 
-  const router = useRouter();
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const onLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     try {
@@ -41,7 +39,7 @@ export default function LoginForm() {
             Inicie sesión en su cuenta para continuar
           </p>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="mt-8 space-y-6" onSubmit={onLogin}>
           {error && <div className="text-red-500 text-sm">{error}</div>}
           <div className="rounded-md shadow-sm -space-y-px">
             <div className="mb-3">
@@ -86,7 +84,7 @@ export default function LoginForm() {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#00C0A3] hover:bg-[#93E9BE] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#93E9BE] transition ease-in"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#00C0A3] hover:bg-[#93E9BE] hover:text-[#195e4b] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#93E9BE] transition ease-in"
             >
               Iniciar sesión
             </button>
