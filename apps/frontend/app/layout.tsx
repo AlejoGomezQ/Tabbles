@@ -14,7 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body>
+      <body className="bg-gradient-to-br from-teal-400 to-blue-300">
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>

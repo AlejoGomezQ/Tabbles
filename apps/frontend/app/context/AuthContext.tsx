@@ -134,7 +134,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     setUser(null);
     setToken(null);
     Cookies.remove("token");
-    router.push("/pages/login");
+    router.push("/");
   };
 
   const addRawMaterial = async (rawMaterial: RawMaterial) => {

@@ -1,51 +1,38 @@
-import Link from "next/link";
+"use client";
+import React from "react";
+import Image from "next/image";
+
+import Header from "./components/PrincipalHeader";
+import Cards from "./components/Cards";
 
 export default function HomePage() {
   return (
-    <div className="grid grid-cols-2 grid-rows-1 items-center m-12">
-      <div className="grid space-y-10">
-        <h1 className="font-titulos font-bold text-h1 text-center">
-          Generador de tablas nutricionales
-        </h1>
-        <div className="px-24 py-9 bg-[#CECECE] rounded-xl">
-          <h3 className="font-titulos font-bold text-h3 text-center">
-            Ingresa ingredientes a una base de datos de materias primas{" "}
-          </h3>
-        </div>
-        <div className="px-24 py-9 bg-[#CECECE] rounded-xl">
-          <h3 className="font-titulos font-bold text-h3 text-center">
-            Genera tablas nutricionales en varios formatos con solo un clic.{" "}
-          </h3>
-        </div>
-        <div className="grid grid-cols-2 grid-rows-1 items-center">
-          <div className="flex flex-col items-center justify-center">
-            <h3 className="font-titulos font-bold text-h3 text-center">
-              Registrate para comenzar
-            </h3>
-            <Link href="pages/register">
-              <button className="border text-center text-white bg-[#212121] hover:bg-white hover:border-[#212121] hover:text-[#212121] py-4 px-6 rounded-xl mt-4">
-                Registrarse
-              </button>
-            </Link>
+    <>
+      <div className="min-h-screen max-w-7xl mx-auto p-8 flex flex-col justify-between">
+        <Header />
+        <main className="flex-grow flex flex-col md:flex-row items-center justify-center gap-12">
+          <div className="md:w-1/2 text-white">
+            <h1 className="text-5xl font-bold mb-6">
+              Generador de tablas nutricionales
+            </h1>
           </div>
-          <div className="flex flex-col items-center justify-center">
-            <h3 className="font-titulos font-bold text-h3 text-center">
-              Si ya tienes cuenta, inicia sesion
-            </h3>
-            <Link href="pages/login">
-              <button className="border text-center text-white bg-[#212121] hover:bg-white hover:border-[#212121] hover:text-[#212121] py-4 px-6 rounded-xl mt-4">
-                Iniciar Sesión
-              </button>
-            </Link>
+          <div className="md:w-1/2">
+            {/*             <Image
+              src="/images/imagen_principal.png"
+              width={600}
+              height={600}
+              alt="Tabble en acción"
+              className="max-w-full h-auto rounded-lg shadow-2xl"
+            /> */}
           </div>
-        </div>
+        </main>
+
+        <Cards />
+
+        <footer className="mt-16 text-center text-[#195e4b] text-opacity-80">
+          <p>&copy; 2024 Tabbles. Todos los derechos reservados.</p>
+        </footer>
       </div>
-      <div className="flex items-center justify-center">
-        <img
-          src="/images/imagen_principal.png"
-          alt="imagen principal"
-        ></img>
-      </div>
-    </div>
+    </>
   );
 }

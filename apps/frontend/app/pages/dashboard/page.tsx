@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Header from "../../components/TabblesHeader";
+import Header from "../../components/PrincipalHeader";
 import SubHeader from "../../components/SubHeader";
 import RawMaterialsForm from "../../components/RawMaterialsForm";
 import RawMaterialsTable from "../../components/RawMaterialsTable";
