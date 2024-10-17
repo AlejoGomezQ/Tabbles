@@ -120,7 +120,7 @@ export default function RawMaterialsForm() {
           <p className="text-sm text-gray-500">
             Llenar los campos según la cantidad en 100 g
           </p>
-          <div className="grid grid-rows-2 grid-cols-9 gap-4">
+          <div className="grid grid-rows-2 grid-cols-6 gap-4">
             {Object.entries(newRawMaterial).map(
               ([key, value]) =>
                 key !== "name" && (

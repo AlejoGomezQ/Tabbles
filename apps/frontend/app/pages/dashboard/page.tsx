@@ -13,9 +13,9 @@ export default function Dashboard() {
   return (
     <section className=" bg-[#ADD8E6]">
       <Header />
-      <main className="min-h-screen flex flex-col">
+      <main className="min-h-full flex flex-col">
         <div className="overflow-hidden">
-          <div className="h-screen max-w-7xl mx-auto my-10 rounded-xl bg-white shadow-lg flex flex-col">
+          <div className="h-[83.5vh] max-w-7xl mx-auto my-10 rounded-xl bg-white shadow-lg flex flex-col">
             <SubHeader activeTab={activeTab} setActiveTab={setActiveTab} />
             {activeTab === "ingredients" && (
               <>

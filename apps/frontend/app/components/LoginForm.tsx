@@ -74,7 +74,7 @@ export default function LoginForm() {
             <div className="text-sm">
               <a
                 href="#"
-                className="font-medium text-[#00C0A3] hover:text-[#93E9BE] transition ease-in"
+                className="font-medium text-[#00C0A3] hover:text-[#195e4b] transition ease-in"
               >
                 ¿Olvidaste tu contraseña?
               </a>
@@ -95,7 +95,7 @@ export default function LoginForm() {
             ¿No tienes una cuenta?{" "}
             <Link
               href="/pages/register"
-              className="font-medium text-[#00C0A3] hover:text-[#93E9BE] transition ease-in"
+              className="font-medium text-[#00C0A3] hover:text-[#195e4b] transition ease-in"
             >
               Registrate
             </Link>

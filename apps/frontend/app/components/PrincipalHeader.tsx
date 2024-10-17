@@ -47,12 +47,12 @@ export default function Header() {
         alt="Tabbles Logo"
       />
       <nav className="space-x-4">
-        <Link href="/login">
+        <Link href="/pages/login">
           <button className="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-[#00C0A3] bg-white hover:bg-[#93E9BE] hover:text-[#195e4b] focus:outline-none transition ease-in">
             Iniciar sesión
           </button>
         </Link>
-        <Link href="/register">
+        <Link href="/pages/register">
           <button className="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#00C0A3] hover:bg-[#93E9BE] hover:text-[#195e4b] focus:outline-none transition ease-in">
             Registrarse
           </button>

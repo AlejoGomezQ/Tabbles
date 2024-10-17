@@ -112,7 +112,7 @@ export default function RegisterForm() {
             ¿Ya tienes una cuenta?{" "}
             <Link
               href="/pages/login"
-              className="font-medium text-[#00C0A3] hover:text-[#93E9BE] transition ease-in"
+              className="font-medium text-[#00C0A3] hover:text-[#195e4b] transition ease-in"
             >
               Iniciar sesión
             </Link>

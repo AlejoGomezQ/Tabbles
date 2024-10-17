@@ -39,7 +39,7 @@ export default function RawMaterialsTable() {
   };
 
   return (
-    <section className="p-8 border-t">
+    <section className="overflow-y-auto p-8 border-t rounded-bl-xl">
       <h2 className="text-2xl font-bold mb-6">Tabla de materias primas</h2>
       <div className="overflow-x-auto">
         <div className="max-h-64 overflow-y-auto">
