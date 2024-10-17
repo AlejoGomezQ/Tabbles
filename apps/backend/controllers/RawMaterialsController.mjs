@@ -13,7 +13,7 @@ export async function createRawMaterial(req, res) {
 
     // Add the raw material to the user's list
     await User.findByIdAndUpdate(userId, {
-      $push: { RawMaterials: newRawMaterial._id },
+      $push: { rawMaterials: newRawMaterial._id },
     });
 
     res.status(201).json({

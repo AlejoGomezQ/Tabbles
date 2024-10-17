@@ -1,7 +1,7 @@
-import { RawMaterial } from "./rawMaterial";
+import { Ingredient } from "./ingredient";
 
 export interface Food{
     name: string;
-    ingredients: RawMaterial[];
+    ingredients: Ingredient[];
     portion: number |undefined;
 }

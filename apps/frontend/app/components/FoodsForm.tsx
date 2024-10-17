@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { RawMaterial } from "../models/rawMaterial";
 import Select from "react-select";
+import { Ingredient } from "../models/ingredient";
 
 export default function FoodsForm() {
   const [newFood, setNewFood] = useState<Food>({
@@ -15,7 +16,8 @@ export default function FoodsForm() {
   const [Foods, setFoods] = useState<Food[]>([]);
   const [error, setError] = useState<string | undefined>(undefined);
   const { addFood } = useAuth();
-  const [ingredients, setIngredients] = useState<RawMaterial[]>([]);
+  const [ingredientsOpt, setIngredientsOpt] = useState<RawMaterial[]>([]);
+  const [SelectedIngredients, SetSelectedIngredients]= useState<Ingredient[]>([]);
   const { getAllRawMaterials } = useAuth();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,20 +28,24 @@ export default function FoodsForm() {
   const handleSelectChange = (selectedOptions: any) => {
     const selectedIngredients = selectedOptions
       .map((option: any) => {
-        return (
-          ingredients.find((ingredient) => ingredient.name === option.value) ||
-          null
-        );
-      })
-      .filter(Boolean) as RawMaterial[];
-
-    setNewFood((prev) => ({
-      ...prev,
-      ingredients: selectedIngredients,
-    }));
+        return {
+          rawMaterial: option.value,
+          quantity: 0, // Inicializar la cantidad en 0
+        };
+      });
+      SetSelectedIngredients(selectedIngredients);
+   
   };
 
-  const ingredientOptions = ingredients.map((ingredient) => ({
+  const handleQuantityChange = (index: number, quantity: number) => {
+    SetSelectedIngredients((prevIngredients) =>
+      prevIngredients.map((ingredient, i) =>
+        i === index ? { ...ingredient, quantity } : ingredient
+      )
+    );
+  };
+
+  const ingredientOptions = ingredientsOpt.map((ingredient) => ({
     value: ingredient.name,
     label: ingredient.name,
   }));
@@ -49,7 +55,7 @@ export default function FoodsForm() {
     try {
       const food = {
         name: newFood.name,
-        ingredients: newFood.ingredients,
+        ingredients: SelectedIngredients,
         portion: newFood.portion,
       };
       await addFood(food);
@@ -70,8 +76,8 @@ export default function FoodsForm() {
   useEffect(() => {
     const fetchRawMaterials = async () => {
       try {
-        const materials = await getAllRawMaterials();
-        setIngredients(materials); // Almacena las materias primas en el estado
+        const rawMaterials = await getAllRawMaterials();
+        setIngredientsOpt(rawMaterials); // Almacena las materias primas en el estado
       } catch (err) {
         setError(
           err instanceof Error
@@ -135,16 +141,22 @@ export default function FoodsForm() {
             />
             <div className="mt-4">
               <h3 className="font-bold">Ingredientes seleccionados:</h3>
-              {newFood.ingredients.length > 0 ? (
-                <ul className="list-disc list-inside mt-2">
-                  {newFood.ingredients.map((ingredient) => (
-                    <li key={ingredient.name}>{ingredient.name}</li>
-                  ))}
+              {SelectedIngredients.length > 0 && ( 
+              <>
+                <ul>
+                  {SelectedIngredients.map((ingredient,index) => (
+                    <li key={ingredient.rawMaterial.name} >
+                      <span>{ingredient.rawMaterial.name}</span>
+                      <input
+                        type="number"
+                        min="0"
+                        value={ingredient.amount}
+                        onChange={(e) => handleQuantityChange(index, parseFloat(e.target.value))}
+                        placeholder="Cantidad"
+                      />
+                    </li>))}
                 </ul>
-              ) : (
-                <p className="text-gray-500">
-                  No hay ingredientes seleccionados.
-                </p>
+              </>
               )}
             </div>
             <button

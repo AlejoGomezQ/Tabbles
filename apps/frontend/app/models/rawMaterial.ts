@@ -1,11 +1,11 @@
 export interface RawMaterial {
   name: string;
   calories: number | undefined;
-  protein: number | undefined;
-  totalFat: number | undefined;
+  proteins: number | undefined;
+  totalFats: number | undefined;
   carbohydrates: number | undefined;
-  saturatedFat: number | undefined;
-  transFat: number | undefined;
+  saturatedFats: number | undefined;
+  transFats: number | undefined;
   cholesterol: number | undefined;
   sodium: number | undefined;
   dietaryFiber: number | undefined;
