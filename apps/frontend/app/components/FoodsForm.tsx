@@ -37,16 +37,18 @@ export default function FoodsForm() {
    
   };
 
-  const handleQuantityChange = (index: number, quantity: number) => {
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>, ingredientName : string) => {
+    const newAmount = parseFloat(e.target.value);
     SetSelectedIngredients((prevIngredients) =>
-      prevIngredients.map((ingredient, i) =>
-        i === index ? { ...ingredient, quantity } : ingredient
+      prevIngredients.map((ingredient) =>
+        ingredient.rawMaterial.name === ingredientName ? { ...ingredient, amount: newAmount } : ingredient
       )
     );
+    console.log(SelectedIngredients)
   };
 
   const ingredientOptions = ingredientsOpt.map((ingredient) => ({
-    value: ingredient.name,
+    value: ingredient,
     label: ingredient.name,
   }));
   const handleSubmit = async (e: React.FormEvent) => {
@@ -125,7 +127,7 @@ export default function FoodsForm() {
               className="mt-1 block w-40 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#93E9BE] focus:border-[#93E9BE]"
             ></input>
             <label
-              htmlFor="portion"
+              htmlFor="Ingredients"
               className="block text-sm font-medium text-gray-700"
             >
               Ingredientes
@@ -142,21 +144,22 @@ export default function FoodsForm() {
             <div className="mt-4">
               <h3 className="font-bold">Ingredientes seleccionados:</h3>
               {SelectedIngredients.length > 0 && ( 
-              <>
-                <ul>
-                  {SelectedIngredients.map((ingredient,index) => (
-                    <li key={ingredient.rawMaterial.name} >
-                      <span>{ingredient.rawMaterial.name}</span>
+              <div>
+                <ul className="grid grid-cols-1 gap-y-2">
+                  {SelectedIngredients.map((ingredient) => (
+                    <li >
+                      <label className="block text-sm font-medium text-gray-700">{ingredient.rawMaterial.name}</label>
                       <input
                         type="number"
                         min="0"
                         value={ingredient.amount}
-                        onChange={(e) => handleQuantityChange(index, parseFloat(e.target.value))}
+                        onChange={(e) => handleQuantityChange(e, ingredient.rawMaterial.name)}
+                        className="mt-1 block w-40 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#93E9BE] focus:border-[#93E9BE]"
                         placeholder="Cantidad"
                       />
                     </li>))}
                 </ul>
-              </>
+              </div>
               )}
             </div>
             <button

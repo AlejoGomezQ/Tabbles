@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { User } from "../models/user";
 import { RawMaterial } from "../models/rawMaterial";
+import { Food } from "../models/food";
 
 interface AuthContextType {
   user: User | null;
@@ -25,6 +26,7 @@ interface AuthContextType {
   logout: () => void;
   addRawMaterial: (rawMaterial: RawMaterial) => Promise<void>;
   getAllRawMaterials: () => Promise<RawMaterial[]>;
+  addFood: (food: Food) =>Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -192,6 +194,35 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  const addFood = async (food : Food) => {
+    const currentToken = token || Cookies.get("token");
+    if (!currentToken) {
+      throw new Error("No authentication token found");
+    }
+
+    try {
+      const response = await fetch("/api/add-food", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentToken}`,
+        },
+        body: JSON.stringify(food),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to add food");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error adding food:", error);
+      throw error;
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -202,6 +233,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         logout,
         addRawMaterial,
         getAllRawMaterials,
+        addFood,
       }}
     >
       {children}
