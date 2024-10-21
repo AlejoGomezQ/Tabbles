@@ -32,7 +32,7 @@ export default function NutritionalTable() {
   };
 
   return (
-    <section className="p-10 overflow-x-auto">
+    <section className=" lg:w-1/2 p-10">
       <div className="max-w-3xl mx-auto mb-10 border border-black">
         <h2 className="text-2xl font-bold border-b border-black text-center">
           Información Nutricional
@@ -177,7 +177,7 @@ export default function NutritionalTable() {
       </div>
       <button
         onClick={generatePDF}
-        className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#00C0A3] hover:bg-[#93E9BE] hover:text-[#195e4b] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#93E9BE] transition ease-in"
+        className="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#00C0A3] hover:bg-[#93E9BE] hover:text-[#195e4b] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#93E9BE] transition ease-in"
       >
         Descargar PDF
       </button>

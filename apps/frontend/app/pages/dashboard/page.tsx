@@ -7,6 +7,7 @@ import RawMaterialsTable from "../../components/RawMaterialsTable";
 import { useState } from "react";
 import FoodsForm from "../../components/FoodsForm";
 import NutritionalTable from "../../components/NutritionalTable";
+import NutritionalTableForm from "../../components/NutritionalTableForm";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("ingredients");
@@ -30,9 +31,10 @@ export default function Dashboard() {
               </>
             )}
             {activeTab === "nutritionalTables" && (
-              <>
+              <section className="flex overflow-x-auto">
+                <NutritionalTableForm />
                 <NutritionalTable />
-              </>
+              </section>
             )}
           </div>
         </div>
