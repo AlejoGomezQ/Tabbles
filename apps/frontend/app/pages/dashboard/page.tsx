@@ -6,6 +6,7 @@ import RawMaterialsForm from "../../components/RawMaterialsForm";
 import RawMaterialsTable from "../../components/RawMaterialsTable";
 import { useState } from "react";
 import FoodsForm from "../../components/FoodsForm";
+import NutritionalTable from "../../components/NutritionalTable";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("ingredients");
@@ -19,13 +20,18 @@ export default function Dashboard() {
             <SubHeader activeTab={activeTab} setActiveTab={setActiveTab} />
             {activeTab === "ingredients" && (
               <>
-                <RawMaterialsForm></RawMaterialsForm>
-                <RawMaterialsTable></RawMaterialsTable>
+                <RawMaterialsForm />
+                <RawMaterialsTable />
               </>
             )}
             {activeTab === "foods" && (
               <>
-                <FoodsForm></FoodsForm>
+                <FoodsForm />
+              </>
+            )}
+            {activeTab === "nutritionalTables" && (
+              <>
+                <NutritionalTable />
               </>
             )}
           </div>

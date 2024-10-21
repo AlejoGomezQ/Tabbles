@@ -16,6 +16,7 @@ export default function RootLayout({
     <html lang="es">
       <body className="bg-gradient-to-br from-teal-400 to-blue-300">
         <AuthProvider>{children}</AuthProvider>
+        <script src="html2pdf.bundle.min.js"></script>
       </body>
     </html>
   );
