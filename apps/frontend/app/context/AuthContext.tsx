@@ -37,11 +37,25 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const router = useRouter();
 
   useEffect(() => {
-    const storedToken = Cookies.get("token");
-    if (storedToken) {
-      setToken(storedToken);
-      fetchUserData(storedToken);
-    }
+    const loadUser = () => {
+      const storedUser = Cookies.get("user");
+      if (storedUser) {
+        try {
+          const parsedUser = JSON.parse(storedUser);
+          setUser(parsedUser);
+        } catch (error) {
+          console.error("Error parsing stored user data:", error);
+          Cookies.remove("user");
+        }
+      }
+    };
+
+    loadUser();
+    window.addEventListener("storage", loadUser);
+
+    return () => {
+      window.removeEventListener("storage", loadUser);
+    };
   }, []);
 
   const fetchUserData = async (token: string) => {

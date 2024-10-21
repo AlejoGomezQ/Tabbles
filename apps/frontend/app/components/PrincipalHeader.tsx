@@ -17,6 +17,8 @@ export default function Header() {
     }
   };
 
+  console.log(user);
+
   const dashboardHeader = (
     <header className="max-w-7xl mx-auto pt-4">
       <nav className="bg-white grid py-2 px-4 grid-cols-2 grid-rows-1 rounded-xl">
