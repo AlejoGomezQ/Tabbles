@@ -10,7 +10,7 @@ import {
 
 import { createUser, login } from "../controllers/UsersController.mjs";
 import { authenticateToken } from "../middleware/auth.mjs";
-
+import { createFood } from "../controllers/FoodsController.mjs";
 const router = Router();
 
 router.use(authenticateToken);
@@ -25,5 +25,7 @@ router.get("/raw-materials/:id", getRawMaterialById);
 router.post("/raw-material", createRawMaterial);
 router.put("/raw-material/:id", updateRawMaterial);
 router.delete("/raw-material/:id", deleteRawMaterial);
+// rutas para los alimentos
+router.post("/food", createFood);
 
 export default router;

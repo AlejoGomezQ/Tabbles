@@ -26,6 +26,12 @@ const UserSchema = new mongoose.Schema(
         ref: "RawMaterial",
       },
     ],
+    foods:[
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Food"
+      }
+    ],
   },
   { timestamps: true }
 );
