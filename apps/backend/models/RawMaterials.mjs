@@ -2,6 +2,12 @@ import mongoose from "mongoose";
 
 const RawMaterialSchema = new mongoose.Schema(
   {
+    id: {
+      type: String,
+      default: () => new mongoose.Types.ObjectId().toString(),
+      unique: true,
+      required: true,
+    },
     name: {
       type: String,
       required: true,
@@ -35,5 +41,6 @@ const RawMaterialSchema = new mongoose.Schema(
 );
 
 RawMaterialSchema.index({ name: 1, user: 1 }, { unique: true });
+RawMaterialSchema.index({ id: 1 }, { unique: true });
 
 export default mongoose.model("RawMaterial", RawMaterialSchema);

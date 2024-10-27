@@ -26,7 +26,7 @@ interface AuthContextType {
   logout: () => void;
   addRawMaterial: (rawMaterial: RawMaterial) => Promise<void>;
   getAllRawMaterials: () => Promise<RawMaterial[]>;
-  addFood: (food: Food) =>Promise<void>
+  addFood: (food: Food) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -39,19 +39,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const router = useRouter();
 
   useEffect(() => {
-    const loadUser = () => {
-      const storedUser = Cookies.get("user");
-      if (storedUser) {
-        try {
-          const parsedUser = JSON.parse(storedUser);
-          setUser(parsedUser);
-        } catch (error) {
-          console.error("Error parsing stored user data:", error);
-          Cookies.remove("user");
-        }
-      }
-    };
-
     loadUser();
     window.addEventListener("storage", loadUser);
 
@@ -59,6 +46,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       window.removeEventListener("storage", loadUser);
     };
   }, []);
+
+  const loadUser = () => {
+    const storedUser = Cookies.get("user");
+    if (storedUser) {
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+      } catch (error) {
+        console.error("Error parsing stored user data:", error);
+        Cookies.remove("user");
+      }
+    }
+  };
 
   const fetchUserData = async (token: string) => {
     try {
@@ -208,7 +208,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  const addFood = async (food : Food) => {
+  const addFood = async (food: Food) => {
     const currentToken = token || Cookies.get("token");
     if (!currentToken) {
       throw new Error("No authentication token found");

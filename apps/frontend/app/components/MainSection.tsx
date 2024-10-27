@@ -12,12 +12,12 @@ export default function MainSection() {
         </h1>
       </div>
       <div className="md:w-1/2">
-        <Image
+        {/*         <Image
           src="/images/imagen1.png"
           width={301}
           height={201}
           alt="Frutas y verduras"
-        />
+        /> */}
       </div>
     </main>
   );
