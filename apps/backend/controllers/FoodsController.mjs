@@ -30,3 +30,14 @@ export async function createFood(req, res) {
     }
   }
 }
+
+export async function getAllFoods(req, res) {
+  try {
+    const userId = req.user.id;
+    const Foods = await Food.find({ user: userId });
+
+    res.json(Foods);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}

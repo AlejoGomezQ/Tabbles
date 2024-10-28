@@ -2,24 +2,22 @@
 
 import PopUp from "./PopUp";
 import React, { useCallback, useEffect, useState } from "react";
-import RawMaterialsEdit from "./RawMaterialsEdit";
-import { RawMaterial } from "../models/rawMaterial";
-import { spanishLabels } from "../utils/spanishLabels";
+import { Food } from "../models/food";
 import { useAuth } from "../context/AuthContext";
 import { Trash2 } from "lucide-react";
 import { Edit } from "lucide-react";
 
-export default function RawMaterialsTable() {
-  const [rawMaterials, setRawMaterials] = useState<RawMaterial[]>([]);
+export default function FoodsTable() {
+  const [Foods, setFoods] = useState<Food[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { getAllRawMaterials } = useAuth();
+  const { getAllFoods } = useAuth();
 
-  const fetchRawMaterials = useCallback(async () => {
+  const fetchFoods = useCallback(async () => {
     setIsLoading(true);
     try {
-      const data = await getAllRawMaterials();
-      setRawMaterials(data);
+      const data = await getAllFoods();
+      setFoods(data);
       setError(null);
     } catch (err) {
       setError(
@@ -28,21 +26,13 @@ export default function RawMaterialsTable() {
     } finally {
       setIsLoading(false);
     }
-  }, [getAllRawMaterials]);
+  }, [getAllFoods]);
 
   useEffect(() => {
-    fetchRawMaterials();
-  }, [getAllRawMaterials]);
+    fetchFoods();
+  }, [getAllFoods]);
 
-  const handleDelete = async (id: string) => {
-    try {
-      await fetchRawMaterials();
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Failed to delete raw material"
-      );
-    }
-  };
+  
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -64,7 +54,7 @@ export default function RawMaterialsTable() {
 
   return (
     <section className="overflow-y-auto p-8 border-t rounded-bl-xl">
-      <h2 className="text-2xl font-bold mb-6">Tabla de materias primas</h2>
+      <h2 className="text-2xl font-bold mb-6">Tabla de alimentos</h2>
       <div className="overflow-x-auto">
         <div className="max-h-64 overflow-y-auto">
           <table className="min-w-full divide-y divide-gray-200">
@@ -73,22 +63,22 @@ export default function RawMaterialsTable() {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   <span className="hidden">Acciones</span>
                 </th>
-                {Object.entries(spanishLabels).map(([key, label]) => (
-                  <th
-                    key={key}
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    {label}
-                  </th>
-                ))}
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    nombre
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    tamaño porción
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    cantidad de ingredientes
+                </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {rawMaterials.map((rawMaterial, index) => (
+              {Foods.map((food, index) => (
                 <tr key={index}>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <button
-                      onClick={() => handleDelete(rawMaterial.id)}
                       className="text-red-600 hover:text-red-900 transition-colors duration-200 flex items-center"
                     >
                       <Trash2 className="w-5 h-5 mr-1" />
@@ -96,17 +86,18 @@ export default function RawMaterialsTable() {
                     </button>
 
                     <PopUp trigger={<Edit className="w-5 h-5 mr-1"></Edit>}>
-                      <RawMaterialsEdit OldRawMaterial={rawMaterial} ></RawMaterialsEdit>
+                      pop up
                     </PopUp>
                   </td>
-                  {Object.keys(spanishLabels).map((key) => (
-                    <td
-                      key={key}
-                      className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                    >
-                      {renderValue(rawMaterial[key as keyof RawMaterial])}
-                    </td>
-                  ))}
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {food.name}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {food.portion}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {food.ingredients.length}
+                  </td>
                 </tr>
               ))}
             </tbody>
