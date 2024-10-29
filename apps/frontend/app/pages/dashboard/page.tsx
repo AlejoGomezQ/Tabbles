@@ -6,6 +6,7 @@ import RawMaterialsForm from "../../components/RawMaterialsForm";
 import RawMaterialsTable from "../../components/RawMaterialsTable";
 import { useState } from "react";
 import FoodsForm from "../../components/FoodsForm";
+import FoodsTable from "../../components/FoodsTable";
 import NutritionalTable from "../../components/NutritionalTable";
 import NutritionalTableForm from "../../components/NutritionalTableForm";
 
@@ -28,6 +29,7 @@ export default function Dashboard() {
             {activeTab === "foods" && (
               <>
                 <FoodsForm />
+                <FoodsTable/>
               </>
             )}
             {activeTab === "nutritionalTables" && (

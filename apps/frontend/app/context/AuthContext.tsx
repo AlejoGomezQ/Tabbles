@@ -12,6 +12,7 @@ import Cookies from "js-cookie";
 import { User } from "../models/user";
 import { RawMaterial } from "../models/rawMaterial";
 import { Food } from "../models/food";
+import { promises } from "dns";
 
 interface AuthContextType {
   user: User | null;
@@ -27,6 +28,7 @@ interface AuthContextType {
   addRawMaterial: (rawMaterial: RawMaterial) => Promise<void>;
   getAllRawMaterials: () => Promise<RawMaterial[]>;
   addFood: (food: Food) => Promise<void>;
+  getAllFoods: () => Promise<Food[]>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -236,6 +238,31 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       throw error;
     }
   };
+  const getAllFoods = async (): Promise<Food[]> => {
+    const currentToken = token || Cookies.get("token");
+    if (!currentToken) {
+      throw new Error("No authentication token found");
+    }
+
+    try {
+      const response = await fetch("/api/get-all-foods", {
+        headers: {
+          Authorization: `Bearer ${currentToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to fetch foods");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching foods:", error);
+      throw error;
+    }
+  };
 
   return (
     <AuthContext.Provider
@@ -248,6 +275,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         addRawMaterial,
         getAllRawMaterials,
         addFood,
+        getAllFoods
       }}
     >
       {children}
