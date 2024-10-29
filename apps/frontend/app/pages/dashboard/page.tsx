@@ -27,13 +27,13 @@ export default function Dashboard() {
               </>
             )}
             {activeTab === "foods" && (
-              <>
+              <section className="flex">
                 <FoodsForm />
-                <FoodsTable/>
-              </>
+                <FoodsTable />
+              </section>
             )}
             {activeTab === "nutritionalTables" && (
-              <section className="flex overflow-x-auto">
+              <section className="flex overflow-x-clip">
                 <NutritionalTableForm />
                 <NutritionalTable />
               </section>

@@ -26,9 +26,10 @@ interface AuthContextType {
   ) => Promise<void>;
   logout: () => void;
   addRawMaterial: (rawMaterial: RawMaterial) => Promise<void>;
+  deleteRawMaterial: (id: string) => Promise<void>;
   getAllRawMaterials: () => Promise<RawMaterial[]>;
   addFood: (food: Food) => Promise<void>;
-  getAllFoods: () => Promise<Food[]>
+  getAllFoods: () => Promise<Food[]>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -184,6 +185,35 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  const deleteRawMaterial = async (id: string) => {
+    const currentToken = token || Cookies.get("token");
+    if (!currentToken) {
+      throw new Error("No authentication token found");
+    }
+
+    try {
+      const response = await fetch(`/api/delete-raw-material/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to delete raw material");
+      }
+
+      const data = await response.json();
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.error("Error adding raw material:", error);
+      throw error;
+    }
+  };
+
   const getAllRawMaterials = async (): Promise<RawMaterial[]> => {
     const currentToken = token || Cookies.get("token");
     if (!currentToken) {
@@ -273,9 +303,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         register,
         logout,
         addRawMaterial,
+        deleteRawMaterial,
         getAllRawMaterials,
         addFood,
-        getAllFoods
+        getAllFoods,
       }}
     >
       {children}

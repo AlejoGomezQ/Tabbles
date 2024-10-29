@@ -1,5 +1,5 @@
 export interface RawMaterial {
-  id: string;
+  id?: string;
   name: string;
   calories: number | undefined;
   proteins: number | undefined;

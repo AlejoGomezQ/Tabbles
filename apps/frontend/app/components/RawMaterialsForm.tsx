@@ -4,29 +4,21 @@ import React, { useState } from "react";
 import { RawMaterial } from "../models/rawMaterial";
 import { useAuth } from "../context/AuthContext";
 import { spanishLabels } from "../utils/spanishLabels";
+import { rawMaterial } from "../const/rawMaterial";
 
 export default function RawMaterialsForm() {
-  const [newRawMaterial, setNewRawMaterial] = useState<RawMaterial>({
-    name: "",
-    calories: undefined,
-    proteins: undefined,
-    totalFats: undefined,
-    carbohydrates: undefined,
-    saturatedFats: undefined,
-    transFats: undefined,
-    cholesterol: undefined,
-    sodium: undefined,
-    dietaryFiber: undefined,
-    sugar: undefined,
-    addedSugar: undefined,
-    vitaminA: undefined,
-    vitaminC: undefined,
-    vitaminD: undefined,
-    iron: undefined,
-    calcium: undefined,
-    zinc: undefined,
-    water: undefined,
-  });
+  const initialState = Object.keys(rawMaterial).reduce(
+    (acc, key) => {
+      const typedKey = key as keyof RawMaterial;
+      return {
+        ...acc,
+        [typedKey]: rawMaterial[typedKey as keyof typeof rawMaterial] ?? "",
+      };
+    },
+    {} as Record<keyof RawMaterial, string>
+  );
+
+  const [newRawMaterial, setNewRawMaterial] = useState(initialState);
   const [RawMaterials, setRawMaterials] = useState<RawMaterial[]>([]);
   const [error, setError] = useState<string | undefined>(undefined);
   const { addRawMaterial } = useAuth();
@@ -40,51 +32,25 @@ export default function RawMaterialsForm() {
     e.preventDefault();
     setError(undefined);
     try {
-      const rawMaterial = {
-        name: newRawMaterial.name,
-        calories: newRawMaterial.calories,
-        proteins: newRawMaterial.proteins,
-        totalFats: newRawMaterial.totalFats,
-        carbohydrates: newRawMaterial.carbohydrates,
-        saturatedFats: newRawMaterial.saturatedFats,
-        transFats: newRawMaterial.transFats,
-        cholesterol: newRawMaterial.cholesterol,
-        sodium: newRawMaterial.sodium,
-        dietaryFiber: newRawMaterial.dietaryFiber,
-        sugar: newRawMaterial.sugar,
-        addedSugar: newRawMaterial.addedSugar,
-        vitaminA: newRawMaterial.vitaminA,
-        vitaminC: newRawMaterial.vitaminC,
-        vitaminD: newRawMaterial.vitaminD,
-        iron: newRawMaterial.iron,
-        calcium: newRawMaterial.calcium,
-        zinc: newRawMaterial.zinc,
-        water: newRawMaterial.water,
-      };
+      // Convert empty strings to undefined and string values to numbers where needed
+      const rawMaterialPayload = Object.entries(newRawMaterial).reduce(
+        (acc, [key, value]) => {
+          if (key === "name") {
+            return { ...acc, [key]: value };
+          }
+          return {
+            ...acc,
+            [key]: value === "" ? undefined : parseFloat(value),
+          };
+        },
+        {} as RawMaterial
+      );
 
-      await addRawMaterial(rawMaterial);
-      setRawMaterials((prev) => [...prev, newRawMaterial]);
-      setNewRawMaterial({
-        name: "",
-        calories: undefined,
-        proteins:undefined,
-        totalFats: undefined,
-        carbohydrates: undefined,
-        saturatedFats: undefined,
-        transFats: undefined,
-        cholesterol: undefined,
-        sodium: undefined,
-        dietaryFiber: undefined,
-        sugar: undefined,
-        addedSugar: undefined,
-        vitaminA: undefined,
-        vitaminC: undefined,
-        vitaminD: undefined,
-        iron: undefined,
-        calcium: undefined,
-        zinc: undefined,
-        water: undefined,
-      });
+      await addRawMaterial(rawMaterialPayload);
+      setRawMaterials((prev) => [...prev, rawMaterialPayload]);
+
+      // Reset form with empty strings instead of undefined
+      setNewRawMaterial(initialState);
     } catch (err) {
       setError(
         err instanceof Error
@@ -95,65 +61,63 @@ export default function RawMaterialsForm() {
   };
 
   return (
-    <>
-      <section className="overflow-y-auto p-8 mb-8">
-        <h2 className="text-2xl font-bold mb-6">Agregar materia prima</h2>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Nombre
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={newRawMaterial.name}
-              onChange={handleInputChange}
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#93E9BE] focus:border-[#93E9BE]"
-              required
-            />
-          </div>
-          <p className="text-sm text-gray-500">
-            Llenar los campos según la cantidad en 100 g
-          </p>
-          <div className="grid grid-rows-2 grid-cols-6 gap-4">
-            {Object.entries(newRawMaterial).map(
-              ([key, value]) =>
-                key !== "name" && (
-                  <div key={key}>
-                    <label
-                      htmlFor={key}
-                      className="block text-sm font-medium text-gray-700 "
-                    >
-                      {spanishLabels[key]}
-                    </label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      id={key}
-                      name={key}
-                      value={value}
-                      onChange={handleInputChange}
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#93E9BE] focus:border-[#93E9BE]"
-                    />
-                  </div>
-                )
-            )}
-          </div>
-          <div>
-            <button
-              type="submit"
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#00C0A3] hover:bg-[#93E9BE] hover:text-[#195e4b] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#93E9BE]"
-            >
-              Agregar
-            </button>
-          </div>
-        </form>
-      </section>
-    </>
+    <section className="overflow-y-auto p-8 mb-8">
+      <h2 className="text-2xl font-bold mb-6">Agregar materia prima</h2>
+      {error && <p className="text-red-500 mb-4">{error}</p>}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Nombre
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={newRawMaterial.name}
+            onChange={handleInputChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#93E9BE] focus:border-[#93E9BE]"
+            required
+          />
+        </div>
+        <p className="text-sm text-gray-500">
+          Llenar los campos según la cantidad en 100 g
+        </p>
+        <div className="grid grid-rows-2 grid-cols-6 gap-4">
+          {Object.entries(newRawMaterial).map(
+            ([key, value]) =>
+              key !== "name" && (
+                <div key={key}>
+                  <label
+                    htmlFor={key}
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    {spanishLabels[key]}
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    id={key}
+                    name={key}
+                    value={value}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#93E9BE] focus:border-[#93E9BE]"
+                  />
+                </div>
+              )
+          )}
+        </div>
+        <div>
+          <button
+            type="submit"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#00C0A3] hover:bg-[#93E9BE] hover:text-[#195e4b] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#93E9BE]"
+          >
+            Agregar
+          </button>
+        </div>
+      </form>
+    </section>
   );
 }

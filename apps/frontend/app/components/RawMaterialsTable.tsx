@@ -13,7 +13,7 @@ export default function RawMaterialsTable() {
   const [rawMaterials, setRawMaterials] = useState<RawMaterial[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { getAllRawMaterials } = useAuth();
+  const { getAllRawMaterials, deleteRawMaterial } = useAuth();
 
   const fetchRawMaterials = useCallback(async () => {
     setIsLoading(true);
@@ -34,15 +34,21 @@ export default function RawMaterialsTable() {
     fetchRawMaterials();
   }, [getAllRawMaterials]);
 
-  const handleDelete = async (id: string) => {
-    try {
-      await fetchRawMaterials();
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Failed to delete raw material"
-      );
-    }
-  };
+  const handleDelete = useCallback(
+    async (id: string) => {
+      try {
+        await deleteRawMaterial(id);
+        await getAllRawMaterials();
+      } catch (error) {
+        setError(
+          error instanceof Error
+            ? error.message
+            : "Failed to delete raw material"
+        );
+      }
+    },
+    [deleteRawMaterial]
+  );
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -88,15 +94,23 @@ export default function RawMaterialsTable() {
                 <tr key={index}>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <button
-                      onClick={() => handleDelete(rawMaterial.id)}
+                      onClick={() =>
+                        rawMaterial.id && handleDelete(rawMaterial.id)
+                      }
                       className="text-red-600 hover:text-red-900 transition-colors duration-200 flex items-center"
                     >
-                      <Trash2 className="w-5 h-5 mr-1" />
+                      <Trash2 className="w-5 h-5 mr-1 mb-1 cursor-pointer" />
                       <span className="hidden">Eliminar</span>
                     </button>
 
-                    <PopUp trigger={<Edit className="w-5 h-5 mr-1"></Edit>}>
-                      <RawMaterialsEdit OldRawMaterial={rawMaterial} ></RawMaterialsEdit>
+                    <PopUp
+                      trigger={
+                        <Edit className="w-5 h-5 mr-1 cursor-pointer"></Edit>
+                      }
+                    >
+                      <RawMaterialsEdit
+                        OldRawMaterial={rawMaterial}
+                      ></RawMaterialsEdit>
                     </PopUp>
                   </td>
                   {Object.keys(spanishLabels).map((key) => (

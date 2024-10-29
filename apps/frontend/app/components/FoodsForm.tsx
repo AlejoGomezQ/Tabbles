@@ -17,7 +17,9 @@ export default function FoodsForm() {
   const [error, setError] = useState<string | undefined>(undefined);
   const { addFood } = useAuth();
   const [ingredientsOpt, setIngredientsOpt] = useState<RawMaterial[]>([]);
-  const [SelectedIngredients, SetSelectedIngredients]= useState<Ingredient[]>([]);
+  const [SelectedIngredients, SetSelectedIngredients] = useState<Ingredient[]>(
+    []
+  );
   const { getAllRawMaterials } = useAuth();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,25 +28,28 @@ export default function FoodsForm() {
   };
 
   const handleSelectChange = (selectedOptions: any) => {
-    const selectedIngredients = selectedOptions
-      .map((option: any) => {
-        return {
-          rawMaterial: option.value,
-          quantity: 0, // Inicializar la cantidad en 0
-        };
-      });
-      SetSelectedIngredients(selectedIngredients);
-   
+    const selectedIngredients = selectedOptions.map((option: any) => {
+      return {
+        rawMaterial: option.value,
+        quantity: 0, // Inicializar la cantidad en 0
+      };
+    });
+    SetSelectedIngredients(selectedIngredients);
   };
 
-  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>, ingredientName : string) => {
+  const handleQuantityChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    ingredientName: string
+  ) => {
     const newAmount = parseFloat(e.target.value);
     SetSelectedIngredients((prevIngredients) =>
       prevIngredients.map((ingredient) =>
-        ingredient.rawMaterial.name === ingredientName ? { ...ingredient, amount: newAmount } : ingredient
+        ingredient.rawMaterial.name === ingredientName
+          ? { ...ingredient, amount: newAmount }
+          : ingredient
       )
     );
-    console.log(SelectedIngredients)
+    console.log(SelectedIngredients);
   };
 
   const ingredientOptions = ingredientsOpt.map((ingredient) => ({
@@ -93,7 +98,7 @@ export default function FoodsForm() {
 
   return (
     <>
-      <section className="p-8 mb-8">
+      <section className="lg:w-1/2 p-8 mb-8">
         <h2 className="text-2xl font-bold mb-6">Agregar alimento</h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
@@ -124,7 +129,7 @@ export default function FoodsForm() {
               id="portion"
               value={newFood.portion}
               onChange={handleInputChange}
-              className="mt-1 block w-40 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#93E9BE] focus:border-[#93E9BE]"
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#93E9BE] focus:border-[#93E9BE]"
             ></input>
             <label
               htmlFor="Ingredients"
@@ -143,23 +148,28 @@ export default function FoodsForm() {
             />
             <div className="mt-4">
               <h3 className="font-bold">Ingredientes seleccionados:</h3>
-              {SelectedIngredients.length > 0 && ( 
-              <div>
-                <ul className="grid grid-cols-1 gap-y-2">
-                  {SelectedIngredients.map((ingredient) => (
-                    <li >
-                      <label className="block text-sm font-medium text-gray-700">{ingredient.rawMaterial.name}</label>
-                      <input
-                        type="number"
-                        min="0"
-                        value={ingredient.amount}
-                        onChange={(e) => handleQuantityChange(e, ingredient.rawMaterial.name)}
-                        className="mt-1 block w-40 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#93E9BE] focus:border-[#93E9BE]"
-                        placeholder="Cantidad"
-                      />
-                    </li>))}
-                </ul>
-              </div>
+              {SelectedIngredients.length > 0 && (
+                <div>
+                  <ul className="grid grid-cols-1 gap-y-2">
+                    {SelectedIngredients.map((ingredient) => (
+                      <li>
+                        <label className="block text-sm font-medium text-gray-700">
+                          {ingredient.rawMaterial.name}
+                        </label>
+                        <input
+                          type="number"
+                          min="0"
+                          value={ingredient.amount}
+                          onChange={(e) =>
+                            handleQuantityChange(e, ingredient.rawMaterial.name)
+                          }
+                          className="mt-1 block w-40 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#93E9BE] focus:border-[#93E9BE]"
+                          placeholder="Cantidad"
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
             </div>
             <button

@@ -32,8 +32,6 @@ export default function FoodsTable() {
     fetchFoods();
   }, [getAllFoods]);
 
-  
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -53,7 +51,7 @@ export default function FoodsTable() {
   };
 
   return (
-    <section className="overflow-y-auto p-8 border-t rounded-bl-xl">
+    <section className="lg:w-1/2 p-8 border-t rounded-bl-xl">
       <h2 className="text-2xl font-bold mb-6">Tabla de alimentos</h2>
       <div className="overflow-x-auto">
         <div className="max-h-64 overflow-y-auto">
@@ -64,13 +62,13 @@ export default function FoodsTable() {
                   <span className="hidden">Acciones</span>
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    nombre
+                  Nombre
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    tamaño porción
+                  Tamaño porción
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    cantidad de ingredientes
+                  Cantidad de ingredientes
                 </th>
               </tr>
             </thead>
@@ -78,9 +76,7 @@ export default function FoodsTable() {
               {Foods.map((food, index) => (
                 <tr key={index}>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <button
-                      className="text-red-600 hover:text-red-900 transition-colors duration-200 flex items-center"
-                    >
+                    <button className="text-red-600 hover:text-red-900 transition-colors duration-200 flex items-center">
                       <Trash2 className="w-5 h-5 mr-1" />
                       <span className="hidden">Eliminar</span>
                     </button>
@@ -89,9 +85,7 @@ export default function FoodsTable() {
                       pop up
                     </PopUp>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {food.name}
-                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">{food.name}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {food.portion}
                   </td>
