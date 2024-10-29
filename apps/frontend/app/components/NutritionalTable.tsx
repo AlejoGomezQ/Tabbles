@@ -28,156 +28,92 @@ export default function NutritionalTable() {
 
   const generatePDF = () => {
     const element = document.getElementById("nutritional-table");
+
+    if (element) {
+      element.className += "w-[50%]";
+    }
+
     html2pdf().from(element).save("tabla_nutricional.pdf");
   };
 
+  const renderRow = (
+    label: string,
+    key: keyof NutritionalTable,
+    unit: string,
+    bold: boolean = false,
+    indent: boolean = false
+  ) => {
+    const data = sampleData[key] as { per100g: number; perServing: number };
+    if (data.per100g === 0 && data.perServing === 0) return null;
+
+    return (
+      <tr
+        className={`border-b border-black ${bold ? "font-bold" : ""} ${indent ? "pl-4" : ""}`}
+      >
+        <td className="p-2">{label}</td>
+        <td className="text-right p-2">
+          {data.per100g} {unit}
+        </td>
+        <td className="text-right p-2">
+          {data.perServing} {unit}
+        </td>
+      </tr>
+    );
+  };
+
   return (
-    <section className=" lg:w-1/2 p-10">
-      <div className="max-w-3xl mx-auto mb-10 border border-black">
-        <h2 className="text-2xl font-bold border-b border-black text-center">
-          Información Nutricional
-        </h2>
-        <div id="nutritional-table" className="">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="border-b border-black">
-                <th colSpan={3} className="text-left p-2">
-                  Tamaño de porción: {sampleData.servingSize}
-                </th>
-              </tr>
-              <tr className="border-b-2 border-black">
-                <th colSpan={3} className="text-left p-2">
-                  Número de porciones por envase:{" "}
-                  {sampleData.servingsPerContainer}
-                </th>
-              </tr>
-              <tr className="border-b border-black">
-                <th className="text-left py-2"></th>
-                <th className="text-right py-2 border-x border-black">
-                  Por 100g
-                </th>
-                <th className="text-right py-2">Por porción</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b-2 border-black font-bold">
-                <td className="py-2">Calorías (Kcal)</td>
-                <td className="text-right">{sampleData.calories.per100g}</td>
-                <td className="text-right">{sampleData.calories.perServing}</td>
-              </tr>
-              <tr className="border-b border-black">
-                <td className="py-2">Grasa Total</td>
-                <td className="text-right">{sampleData.totalFat.per100g} g</td>
-                <td className="text-right">
-                  {sampleData.totalFat.perServing} g
-                </td>
-              </tr>
-              <tr className="border-b border-black pl-4">
-                <td className="py-2">Grasa saturada</td>
-                <td className="text-right">
-                  {sampleData.saturatedFat.per100g} g
-                </td>
-                <td className="text-right">
-                  {sampleData.saturatedFat.perServing} g
-                </td>
-              </tr>
-              <tr className="border-b border-black pl-4">
-                <td className="py-2">Grasa trans</td>
-                <td className="text-right">{sampleData.transFat.per100g} mg</td>
-                <td className="text-right">
-                  {sampleData.transFat.perServing} mg
-                </td>
-              </tr>
-              <tr className="border-b border-black">
-                <td className="py-2">Carbohidratos totales</td>
-                <td className="text-right">
-                  {sampleData.totalCarbs.per100g} g
-                </td>
-                <td className="text-right">
-                  {sampleData.totalCarbs.perServing} g
-                </td>
-              </tr>
-              <tr className="border-b border-black pl-4">
-                <td className="py-2">Fibra dietaria</td>
-                <td className="text-right">
-                  {sampleData.dietaryFiber.per100g} g
-                </td>
-                <td className="text-right">
-                  {sampleData.dietaryFiber.perServing} g
-                </td>
-              </tr>
-              <tr className="border-b border-black pl-4">
-                <td className="py-2">Azúcares totales</td>
-                <td className="text-right">
-                  {sampleData.totalSugars.per100g} g
-                </td>
-                <td className="text-right">
-                  {sampleData.totalSugars.perServing} g
-                </td>
-              </tr>
-              <tr className="border-b border-black pl-8 font-bold">
-                <td className="py-2">Azúcares añadidos</td>
-                <td className="text-right">
-                  {sampleData.addedSugars.per100g} g
-                </td>
-                <td className="text-right">
-                  {sampleData.addedSugars.perServing} g
-                </td>
-              </tr>
-              <tr className="border-b border-black">
-                <td className="py-2">Proteína</td>
-                <td className="text-right">{sampleData.protein.per100g} g</td>
-                <td className="text-right">
-                  {sampleData.protein.perServing} g
-                </td>
-              </tr>
-              <tr className="border-b-2 border-black font-bold">
-                <td className="py-2">Sodio</td>
-                <td className="text-right">{sampleData.sodium.per100g} mg</td>
-                <td className="text-right">
-                  {sampleData.sodium.perServing} mg
-                </td>
-              </tr>
-              <tr className="border-b border-black">
-                <td className="py-2">Vitamina A</td>
-                <td className="text-right">
-                  {sampleData.vitaminA.per100g} µg ER
-                </td>
-                <td className="text-right">
-                  {sampleData.vitaminA.perServing} µg ER
-                </td>
-              </tr>
-              <tr className="border-b border-black">
-                <td className="py-2">Vitamina D</td>
-                <td className="text-right">{sampleData.vitaminD.per100g} µg</td>
-                <td className="text-right">
-                  {sampleData.vitaminD.perServing} µg
-                </td>
-              </tr>
-              <tr className="border-b border-black">
-                <td className="py-2">Calcio</td>
-                <td className="text-right">{sampleData.calcium.per100g} mg</td>
-                <td className="text-right">
-                  {sampleData.calcium.perServing} mg
-                </td>
-              </tr>
-              <tr className="border-b border-black">
-                <td className="py-2">Hierro</td>
-                <td className="text-right">{sampleData.iron.per100g} mg</td>
-                <td className="text-right">{sampleData.iron.perServing} mg</td>
-              </tr>
-              <tr>
-                <td className="py-2">Zinc</td>
-                <td className="text-right">{sampleData.zinc.per100g} mg</td>
-                <td className="text-right">{sampleData.zinc.perServing} mg</td>
-              </tr>
-            </tbody>
-          </table>
+    <section className="lg:w-1/2 p-10">
+      <div id="nutritional-table">
+        <div className="max-w-3xl mx-auto m-4 border border-black">
+          <h2 className="text-2xl font-bold border-b p-2 border-black text-center">
+            Información Nutricional
+          </h2>
+          <div>
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="border-b border-black">
+                  <th colSpan={3} className="text-left p-2">
+                    Tamaño de porción: {sampleData.servingSize}
+                  </th>
+                </tr>
+                <tr className="border-b-2 border-black">
+                  <th colSpan={3} className="text-left p-2">
+                    Número de porciones por envase:{" "}
+                    {sampleData.servingsPerContainer}
+                  </th>
+                </tr>
+                <tr className="border-b border-black">
+                  <th className="text-left py-2"></th>
+                  <th className="text-right p-2 border-x border-black">
+                    Por 100g
+                  </th>
+                  <th className="text-right p-2">Por porción</th>
+                </tr>
+              </thead>
+              <tbody>
+                {renderRow("Calorías (Kcal)", "calories", "", true)}
+                {renderRow("Grasa Total", "totalFat", "g")}
+                {renderRow("Grasa saturada", "saturatedFat", "g", false, true)}
+                {renderRow("Grasa trans", "transFat", "mg", false, true)}
+                {renderRow("Carbohidratos totales", "totalCarbs", "g")}
+                {renderRow("Fibra dietaria", "dietaryFiber", "g", false, true)}
+                {renderRow("Azúcares totales", "totalSugars", "g", false, true)}
+                {renderRow("Azúcares añadidos", "addedSugars", "g", true, true)}
+                {renderRow("Proteína", "protein", "g")}
+                {renderRow("Sodio", "sodium", "mg", true)}
+                {renderRow("Vitamina A", "vitaminA", "µg ER")}
+                {renderRow("Vitamina D", "vitaminD", "µg")}
+                {renderRow("Calcio", "calcium", "mg")}
+                {renderRow("Hierro", "iron", "mg")}
+                {renderRow("Zinc", "zinc", "mg")}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       <button
         onClick={generatePDF}
-        className="group relative w-full flex justify-center py-2 px-4 mb-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#00C0A3] hover:bg-[#93E9BE] hover:text-[#195e4b] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#93E9BE] transition ease-in"
+        className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#00C0A3] hover:bg-[#93E9BE] hover:text-[#195e4b] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#93E9BE] transition ease-in"
       >
         Descargar PDF
       </button>
