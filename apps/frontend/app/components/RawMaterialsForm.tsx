@@ -4,29 +4,42 @@ import React, { useState } from "react";
 import { RawMaterial } from "../models/rawMaterial";
 import { useAuth } from "../context/AuthContext";
 import { spanishLabels } from "../utils/spanishLabels";
+import { rawMaterial } from "../const/rawMaterial";
 
 
 interface params{
-  DefaulRawMaterial : RawMaterial,
+  DefaultRawMaterial : RawMaterial,
   FormName: string,
   OnSubmit : string
-}
-export default function RawMaterialsForm({DefaulRawMaterial,FormName,OnSubmit}: params) {
-  const initialState = Object.keys(DefaulRawMaterial).reduce(
-    (acc, key) => {
-      const typedKey = key as keyof RawMaterial;
-      return {
-        ...acc,
-        [typedKey]: DefaulRawMaterial[typedKey as keyof typeof DefaulRawMaterial] ?? "",
-      };
-    },
-    {} as Record<keyof RawMaterial, string>
-  );
-
-  const [newRawMaterial, setNewRawMaterial] = useState(initialState);
+};
+export default function RawMaterialsForm({DefaultRawMaterial,FormName,OnSubmit}: params) {
+  
+  const [newRawMaterial, setNewRawMaterial] = useState<RawMaterial>({
+    id : DefaultRawMaterial.id?  DefaultRawMaterial.id : "",
+    name :DefaultRawMaterial.name,
+    calories : DefaultRawMaterial.calories,
+    proteins : DefaultRawMaterial.proteins,
+    totalFats: DefaultRawMaterial.totalFats,
+    carbohydrates: DefaultRawMaterial.carbohydrates,
+    saturatedFats: DefaultRawMaterial.saturatedFats,
+    transFats: DefaultRawMaterial.transFats,
+    cholesterol: DefaultRawMaterial.cholesterol,
+    sodium: DefaultRawMaterial.sodium,
+    dietaryFiber: DefaultRawMaterial.dietaryFiber,
+    sugar: DefaultRawMaterial.sugar,
+    addedSugar: DefaultRawMaterial.addedSugar,
+    vitaminA: DefaultRawMaterial.vitaminA,
+    vitaminC: DefaultRawMaterial.vitaminC,
+    vitaminD: DefaultRawMaterial.vitaminD,
+    iron: DefaultRawMaterial.iron,
+    calcium: DefaultRawMaterial.calcium,
+    zinc: DefaultRawMaterial.zinc,
+    water: DefaultRawMaterial.water
+  });
   const [RawMaterials, setRawMaterials] = useState<RawMaterial[]>([]);
   const [error, setError] = useState<string | undefined>(undefined);
   const { addRawMaterial } = useAuth();
+  const {updateRawMaterial} = useAuth();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -37,25 +50,29 @@ export default function RawMaterialsForm({DefaulRawMaterial,FormName,OnSubmit}: 
     e.preventDefault();
     setError(undefined);
     try {
-      // Convert empty strings to undefined and string values to numbers where needed
+      // guarda los valores agregados en un objeto llamado rawMaterialPayload
       const rawMaterialPayload = Object.entries(newRawMaterial).reduce(
         (acc, [key, value]) => {
-          if (key === "name") {
-            return { ...acc, [key]: value };
+          // Solo agrega la clave si `value` no es una cadena vacía ni undefined
+          if (value !== "" && value !== undefined && value !== null) {
+            return {
+              ...acc,
+              [key]: (key === "name" || key === "id") ? value : parseFloat(value as string),
+            };
           }
-          return {
-            ...acc,
-            [key]: value === "" ? undefined : parseFloat(value),
-          };
+          return acc; // Si `value` es vacío o undefined, no se agrega al objeto
         },
-        {} as RawMaterial
+        {} as RawMaterial // Usa `Partial` para permitir propiedades opcionales
       );
-
-      await addRawMaterial(rawMaterialPayload);
+      if(OnSubmit === "create"){
+        await addRawMaterial(rawMaterialPayload);
+      }else if(OnSubmit === "update"){
+        await updateRawMaterial(rawMaterialPayload);
+      }
       setRawMaterials((prev) => [...prev, rawMaterialPayload]);
 
       // Reset form with empty strings instead of undefined
-      setNewRawMaterial(initialState);
+      setNewRawMaterial(DefaultRawMaterial);
     } catch (err) {
       setError(
         err instanceof Error

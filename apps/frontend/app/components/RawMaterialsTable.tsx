@@ -108,7 +108,7 @@ export default function RawMaterialsTable() {
                         <Edit className="w-5 h-5 mr-1 cursor-pointer"></Edit>
                       }
                     >
-                      <RawMaterialsForm DefaulRawMaterial={rawMaterial} FormName="Modificar Materia Prima" OnSubmit="update"></RawMaterialsForm>
+                      <RawMaterialsForm DefaultRawMaterial={rawMaterial} FormName="Modificar Materia Prima" OnSubmit="update"></RawMaterialsForm>
                     </PopUp>
                   </td>
                   {Object.keys(spanishLabels).map((key) => (

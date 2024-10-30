@@ -24,7 +24,7 @@ export default function Dashboard() {
             <SubHeader activeTab={activeTab} setActiveTab={setActiveTab} />
             {activeTab === "ingredients" && (
               <>
-                <RawMaterialsForm DefaulRawMaterial={rawMaterial}FormName="Agregar materia prima" OnSubmit="create"/>
+                <RawMaterialsForm DefaultRawMaterial={rawMaterial}FormName="Agregar materia prima" OnSubmit="create"/>
                 <RawMaterialsTable />
               </>
             )}

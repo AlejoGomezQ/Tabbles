@@ -45,16 +45,16 @@ export async function getAllRawMaterials(req, res) {
 export async function getRawMaterialById(req, res) {
   try {
     const userId = req.user.id;
-    const RawMaterial = await RawMaterial.findOne({
+    const rawMaterial = await RawMaterial.findOne({
       _id: req.params.id,
       user: userId,
     });
 
-    if (!RawMaterial) {
+    if (!rawMaterial) {
       return res.status(404).json({ message: "Materia prima no encontrada." });
     }
 
-    res.json(RawMaterial);
+    res.json(rawMaterial);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -63,17 +63,17 @@ export async function getRawMaterialById(req, res) {
 export async function updateRawMaterial(req, res) {
   try {
     const userId = req.user.id;
-    const RawMaterial = await RawMaterial.findOneAndUpdate(
-      { _id: req.params.id, user: userId },
+    const rawMaterial = await RawMaterial.findOneAndUpdate(
+      { id: req.params.id, user: userId },
       req.body,
       { new: true }
     );
-
-    if (!RawMaterial) {
+    
+    if (!rawMaterial) {
       return res.status(404).json({ message: "Materia prima no encontrada." });
     }
 
-    res.json(RawMaterial);
+    res.json(rawMaterial);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -82,12 +82,12 @@ export async function updateRawMaterial(req, res) {
 export async function deleteRawMaterial(req, res) {
   try {
     const userId = req.user.id;
-    const RawMaterial = await RawMaterial.findOneAndDelete({
-      _id: req.params.id,
+    const rawMaterial = await RawMaterial.findOneAndDelete({
+      id: req.params.id,
       user: userId,
     });
 
-    if (!RawMaterial) {
+    if (!rawMaterial) {
       return res.status(404).json({ message: "Materia prima no encontrada." });
     }
 

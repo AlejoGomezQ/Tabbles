@@ -13,6 +13,8 @@ import { User } from "../models/user";
 import { RawMaterial } from "../models/rawMaterial";
 import { Food } from "../models/food";
 import { promises } from "dns";
+import { AUTOMATIC_FONT_OPTIMIZATION_MANIFEST } from "next/dist/shared/lib/constants";
+import { rawMaterial } from "../const/rawMaterial";
 
 interface AuthContextType {
   user: User | null;
@@ -30,6 +32,7 @@ interface AuthContextType {
   getAllRawMaterials: () => Promise<RawMaterial[]>;
   addFood: (food: Food) => Promise<void>;
   getAllFoods: () => Promise<Food[]>;
+  updateRawMaterial: (rawMaterial: RawMaterial) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -239,6 +242,34 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       throw error;
     }
   };
+  const updateRawMaterial = async (rawMaterial:RawMaterial) =>{
+    const currentToken = token || Cookies.get("token");
+    if (!currentToken) {
+      throw new Error("No authentication token found");
+    }
+
+    try {
+      const response = await fetch("/api/update-raw-material/" + rawMaterial.id, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentToken}`,
+        },
+        body: JSON.stringify(rawMaterial),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update raw material");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error updating raw material:", error);
+      throw error;
+    }
+  }
 
   const addFood = async (food: Food) => {
     const currentToken = token || Cookies.get("token");
@@ -307,6 +338,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         getAllRawMaterials,
         addFood,
         getAllFoods,
+        updateRawMaterial
       }}
     >
       {children}
