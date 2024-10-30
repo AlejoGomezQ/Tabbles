@@ -6,6 +6,7 @@ import { Food } from "../models/food";
 import { useAuth } from "../context/AuthContext";
 import { Trash2 } from "lucide-react";
 import { Edit } from "lucide-react";
+import FoodsForm from "./FoodsForm";
 
 export default function FoodsTable() {
   const [Foods, setFoods] = useState<Food[]>([]);
@@ -82,7 +83,7 @@ export default function FoodsTable() {
                     </button>
 
                     <PopUp trigger={<Edit className="w-5 h-5 mr-1"></Edit>}>
-                      pop up
+                      <FoodsForm DefaultFood={food} FormName="Modificar Alimento" OnSubmit="update"></FoodsForm>
                     </PopUp>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">{food.name}</td>

@@ -9,6 +9,8 @@ import FoodsForm from "../../components/FoodsForm";
 import FoodsTable from "../../components/FoodsTable";
 import NutritionalTable from "../../components/NutritionalTable";
 import NutritionalTableForm from "../../components/NutritionalTableForm";
+import { rawMaterial } from "../../const/rawMaterial";
+import { food } from "../../const/food";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("ingredients");
@@ -22,13 +24,13 @@ export default function Dashboard() {
             <SubHeader activeTab={activeTab} setActiveTab={setActiveTab} />
             {activeTab === "ingredients" && (
               <>
-                <RawMaterialsForm />
+                <RawMaterialsForm DefaulRawMaterial={rawMaterial}FormName="Agregar materia prima" OnSubmit="create"/>
                 <RawMaterialsTable />
               </>
             )}
             {activeTab === "foods" && (
               <section className="flex">
-                <FoodsForm />
+                <FoodsForm DefaultFood={food} FormName="Agregar alimento" OnSubmit="create"/>
                 <FoodsTable />
               </section>
             )}

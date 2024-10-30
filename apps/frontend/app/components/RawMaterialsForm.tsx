@@ -4,15 +4,20 @@ import React, { useState } from "react";
 import { RawMaterial } from "../models/rawMaterial";
 import { useAuth } from "../context/AuthContext";
 import { spanishLabels } from "../utils/spanishLabels";
-import { rawMaterial } from "../const/rawMaterial";
 
-export default function RawMaterialsForm() {
-  const initialState = Object.keys(rawMaterial).reduce(
+
+interface params{
+  DefaulRawMaterial : RawMaterial,
+  FormName: string,
+  OnSubmit : string
+}
+export default function RawMaterialsForm({DefaulRawMaterial,FormName,OnSubmit}: params) {
+  const initialState = Object.keys(DefaulRawMaterial).reduce(
     (acc, key) => {
       const typedKey = key as keyof RawMaterial;
       return {
         ...acc,
-        [typedKey]: rawMaterial[typedKey as keyof typeof rawMaterial] ?? "",
+        [typedKey]: DefaulRawMaterial[typedKey as keyof typeof DefaulRawMaterial] ?? "",
       };
     },
     {} as Record<keyof RawMaterial, string>
@@ -62,7 +67,7 @@ export default function RawMaterialsForm() {
 
   return (
     <section className="overflow-y-auto p-8 mb-8">
-      <h2 className="text-2xl font-bold mb-6">Agregar materia prima</h2>
+      <h2 className="text-2xl font-bold mb-6">{FormName}</h2>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -88,7 +93,7 @@ export default function RawMaterialsForm() {
         <div className="grid grid-rows-2 grid-cols-6 gap-4">
           {Object.entries(newRawMaterial).map(
             ([key, value]) =>
-              key !== "name" && (
+              (key !== "name" && key !== "id" )&& (
                 <div key={key}>
                   <label
                     htmlFor={key}

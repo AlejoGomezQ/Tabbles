@@ -2,7 +2,7 @@
 
 import PopUp from "./PopUp";
 import React, { useCallback, useEffect, useState } from "react";
-import RawMaterialsEdit from "./RawMaterialsEdit";
+import RawMaterialsForm from "./RawMaterialsForm";
 import { RawMaterial } from "../models/rawMaterial";
 import { spanishLabels } from "../utils/spanishLabels";
 import { useAuth } from "../context/AuthContext";
@@ -108,9 +108,7 @@ export default function RawMaterialsTable() {
                         <Edit className="w-5 h-5 mr-1 cursor-pointer"></Edit>
                       }
                     >
-                      <RawMaterialsEdit
-                        OldRawMaterial={rawMaterial}
-                      ></RawMaterialsEdit>
+                      <RawMaterialsForm DefaulRawMaterial={rawMaterial} FormName="Modificar Materia Prima" OnSubmit="update"></RawMaterialsForm>
                     </PopUp>
                   </td>
                   {Object.keys(spanishLabels).map((key) => (
