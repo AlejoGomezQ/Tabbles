@@ -6,19 +6,20 @@ import { RawMaterial } from "../models/rawMaterial";
 import Select from "react-select";
 import { Ingredient } from "../models/ingredient";
 
-export default function FoodsForm() {
-  const [newFood, setNewFood] = useState<Food>({
-    name: "",
-    ingredients: [],
-    portion: undefined,
-  });
+interface params{
+  DefaultFood : Food,
+  FormName : string,
+  OnSubmit : string
+}
+export default function FoodsForm({DefaultFood, FormName, OnSubmit}: params) {
+  const [newFood, setNewFood] = useState<Food>(DefaultFood);
 
   const [Foods, setFoods] = useState<Food[]>([]);
   const [error, setError] = useState<string | undefined>(undefined);
   const { addFood } = useAuth();
   const [ingredientsOpt, setIngredientsOpt] = useState<RawMaterial[]>([]);
   const [SelectedIngredients, SetSelectedIngredients] = useState<Ingredient[]>(
-    []
+    DefaultFood.ingredients
   );
   const { getAllRawMaterials } = useAuth();
 
@@ -99,7 +100,7 @@ export default function FoodsForm() {
   return (
     <>
       <section className="lg:w-1/2 p-8 mb-8">
-        <h2 className="text-2xl font-bold mb-6">Agregar alimento</h2>
+        <h2 className="text-2xl font-bold mb-6">{FormName}</h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 gap-y-2">
@@ -145,6 +146,10 @@ export default function FoodsForm() {
               className="basic-multi-select"
               classNamePrefix="select"
               placeholder="Selecciona ingredientes"
+              defaultValue={SelectedIngredients.map((ingredient) => (
+              {
+                value: ingredient.rawMaterial,
+                label: ingredient.rawMaterial.name}))}
             />
             <div className="mt-4">
               <h3 className="font-bold">Ingredientes seleccionados:</h3>
