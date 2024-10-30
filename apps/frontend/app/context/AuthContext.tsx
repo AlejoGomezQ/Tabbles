@@ -299,6 +299,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       throw error;
     }
   };
+
   const getAllFoods = async (): Promise<Food[]> => {
     const currentToken = token || Cookies.get("token");
     if (!currentToken) {

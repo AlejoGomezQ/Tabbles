@@ -1,7 +1,8 @@
 import { Ingredient } from "./ingredient";
 
-export interface Food{
-    name: string;
-    ingredients: Ingredient[];
-    portion: number |undefined;
+export interface Food {
+  id?: string;
+  name: string;
+  ingredients: Ingredient[];
+  portion: number | undefined;
 }

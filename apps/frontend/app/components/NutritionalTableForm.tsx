@@ -3,11 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import Select from "react-select";
-
-interface Food {
-  id: string;
-  name: string;
-}
+import { Food } from "../models/food";
 
 interface FormatOption {
   value: string;
@@ -22,13 +18,15 @@ export default function NutritionalTableForm() {
   const [foods, setFoods] = useState<Food[]>([]);
   const [error, setError] = useState<string | undefined>(undefined);
 
+  const { getAllFoods } = useAuth();
+
   const formatOptions: FormatOption[] = [
     { value: "spanish", label: "Español" },
     { value: "english", label: "Inglés" },
     { value: "both", label: "Español/Inglés" },
   ];
 
-  /*   useEffect(() => {
+  useEffect(() => {
     const fetchFoods = async () => {
       try {
         const fetchedFoods = await getAllFoods();
@@ -42,7 +40,7 @@ export default function NutritionalTableForm() {
       }
     };
     fetchFoods();
-  }, []); */
+  }, []);
 
   const handleFoodChange = (selectedOption: any) => {
     setSelectedFood(selectedOption);

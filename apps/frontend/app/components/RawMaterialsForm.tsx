@@ -50,7 +50,10 @@ export default function RawMaterialsForm({DefaultRawMaterial,FormName,OnSubmit}:
     e.preventDefault();
     setError(undefined);
     try {
+<<<<<<< HEAD
       // guarda los valores agregados en un objeto llamado rawMaterialPayload
+=======
+>>>>>>> 29a8ad3c89a9302be760f3750fcf41e5a4aafb44
       const rawMaterialPayload = Object.entries(newRawMaterial).reduce(
         (acc, [key, value]) => {
           // Solo agrega la clave si `value` no es una cadena vacía ni undefined
@@ -71,8 +74,12 @@ export default function RawMaterialsForm({DefaultRawMaterial,FormName,OnSubmit}:
       }
       setRawMaterials((prev) => [...prev, rawMaterialPayload]);
 
+<<<<<<< HEAD
       // Reset form with empty strings instead of undefined
       setNewRawMaterial(DefaultRawMaterial);
+=======
+      setNewRawMaterial(initialState);
+>>>>>>> 29a8ad3c89a9302be760f3750fcf41e5a4aafb44
     } catch (err) {
       setError(
         err instanceof Error
