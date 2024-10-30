@@ -32,7 +32,6 @@ export default function RawMaterialsForm() {
     e.preventDefault();
     setError(undefined);
     try {
-      // Convert empty strings to undefined and string values to numbers where needed
       const rawMaterialPayload = Object.entries(newRawMaterial).reduce(
         (acc, [key, value]) => {
           if (key === "name") {
@@ -49,7 +48,6 @@ export default function RawMaterialsForm() {
       await addRawMaterial(rawMaterialPayload);
       setRawMaterials((prev) => [...prev, rawMaterialPayload]);
 
-      // Reset form with empty strings instead of undefined
       setNewRawMaterial(initialState);
     } catch (err) {
       setError(
