@@ -6,21 +6,21 @@ import { RawMaterial } from "../models/rawMaterial";
 import Select from "react-select";
 import { Ingredient } from "../models/ingredient";
 
-interface params{
-  DefaultFood : Food,
-  FormName : string,
-  OnSubmit : string
+interface params {
+  DefaultFood: Food;
+  FormName: string;
+  OnSubmit: string;
 }
-export default function FoodsForm({DefaultFood, FormName, OnSubmit}: params) {
+export default function FoodsForm({ DefaultFood, FormName, OnSubmit }: params) {
   const [newFood, setNewFood] = useState<Food>(DefaultFood);
-
   const [Foods, setFoods] = useState<Food[]>([]);
   const [error, setError] = useState<string | undefined>(undefined);
-  const { addFood } = useAuth();
   const [ingredientsOpt, setIngredientsOpt] = useState<RawMaterial[]>([]);
   const [SelectedIngredients, SetSelectedIngredients] = useState<Ingredient[]>(
     DefaultFood.ingredients
   );
+
+  const { addFood } = useAuth();
   const { getAllRawMaterials } = useAuth();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,13 +50,14 @@ export default function FoodsForm({DefaultFood, FormName, OnSubmit}: params) {
           : ingredient
       )
     );
-    console.log(SelectedIngredients);
   };
 
   const ingredientOptions = ingredientsOpt.map((ingredient) => ({
     value: ingredient,
     label: ingredient.name,
   }));
+
+  console.log(ingredientOptions);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(undefined);
@@ -146,10 +147,10 @@ export default function FoodsForm({DefaultFood, FormName, OnSubmit}: params) {
               className="basic-multi-select"
               classNamePrefix="select"
               placeholder="Selecciona ingredientes"
-              defaultValue={SelectedIngredients.map((ingredient) => (
-              {
+              defaultValue={SelectedIngredients.map((ingredient) => ({
                 value: ingredient.rawMaterial,
-                label: ingredient.rawMaterial.name}))}
+                label: ingredient.rawMaterial.name,
+              }))}
             />
             <div className="mt-4">
               <h3 className="font-bold">Ingredientes seleccionados:</h3>

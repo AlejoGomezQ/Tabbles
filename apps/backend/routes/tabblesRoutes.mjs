@@ -27,6 +27,6 @@ router.put("/raw-material/:id", updateRawMaterial);
 router.delete("/raw-material/:id", deleteRawMaterial);
 // rutas para los alimentos
 router.post("/food", createFood);
-router.get("/foods", getAllFoods)
+router.get("/foods", getAllFoods);
 
 export default router;

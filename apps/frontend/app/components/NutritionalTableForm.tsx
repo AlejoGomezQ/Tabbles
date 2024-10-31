@@ -1,13 +1,20 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../context/AuthContext";
-import Select from "react-select";
+import Select, { ActionMeta, GroupBase, SingleValue } from "react-select";
 import { Food } from "../models/food";
 
 interface FormatOption {
   value: string;
   label: string;
+}
+
+interface ServingData {
+  servingSize: string;
+  servingsPerContainer: string;
+  servingSizeError: string;
+  servingsPerContainerError: string;
 }
 
 export default function NutritionalTableForm() {
@@ -16,7 +23,14 @@ export default function NutritionalTableForm() {
     null
   );
   const [foods, setFoods] = useState<Food[]>([]);
-  const [error, setError] = useState<string | undefined>(undefined);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [servingData, setServingData] = useState<ServingData>({
+    servingSize: "",
+    servingsPerContainer: "",
+    servingSizeError: "",
+    servingsPerContainerError: "",
+  });
 
   const { getAllFoods } = useAuth();
 
@@ -26,33 +40,61 @@ export default function NutritionalTableForm() {
     { value: "both", label: "Español/Inglés" },
   ];
 
-  useEffect(() => {
-    const fetchFoods = async () => {
-      try {
-        const fetchedFoods = await getAllFoods();
-        setFoods(fetchedFoods);
-      } catch (err) {
-        setError(
-          err instanceof Error
-            ? err.message
-            : "Ocurrió un error al obtener los alimentos"
-        );
-      }
-    };
-    fetchFoods();
-  }, []);
+  const fetchFoods = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const data = await getAllFoods();
+      setFoods(data);
+      setError(null);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch raw materials"
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }, [getAllFoods]);
 
-  const handleFoodChange = (selectedOption: any) => {
+  useEffect(() => {
+    fetchFoods();
+  }, [getAllFoods]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="text-red-500">{error}</div>;
+  }
+
+  const handleFoodChange = (selectedOption: Food | null) => {
     setSelectedFood(selectedOption);
   };
 
-  const handleFormatChange = (selectedOption: any) => {
-    setSelectedFormat(selectedOption);
+  const handleFormatChange = (newValue: SingleValue<FormatOption>) => {
+    setSelectedFormat(newValue);
+  };
+
+  const handleServingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    let error = "";
+
+    if (value && !/^\d*\.?\d*$/.test(value)) {
+      error = "Por favor ingrese un número válido";
+    } else if (parseFloat(value) <= 0) {
+      error = "El valor debe ser mayor que 0";
+    }
+
+    setServingData((prev) => ({
+      ...prev,
+      [name]: value,
+      [`${name}Error`]: error,
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(undefined);
+    setError(null);
     if (!selectedFood || !selectedFormat) {
       setError("Por favor, seleccione un alimento y un formato");
       return;
@@ -66,6 +108,11 @@ export default function NutritionalTableForm() {
       );
     }
   };
+
+  const foodOptions = foods.map((food) => ({
+    ...food,
+    label: food.name,
+  }));
 
   return (
     <section className="sticky top-0 lg:w-1/2 p-8 mb-8">
@@ -81,12 +128,58 @@ export default function NutritionalTableForm() {
           </label>
           <Select
             id="food"
+            name="food"
+            isMulti={false}
+            options={foodOptions as unknown as (Food | GroupBase<Food>)[]}
             onChange={handleFoodChange}
             value={selectedFood}
             className="mt-1 block w-full"
             classNamePrefix="select"
             placeholder="Buscar alimento..."
+            defaultValue={selectedFood}
           />
+          <label
+            htmlFor="servingSize"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
+            Tamaño de la porción
+          </label>
+          <input
+            type="number"
+            step="0.1"
+            min="0"
+            id="servingSize"
+            name="servingSize"
+            value={servingData.servingSize}
+            onChange={handleServingChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#93E9BE] focus:border-[#93E9BE]"
+          />
+          {servingData.servingSizeError && (
+            <p className="mt-1 text-sm text-red-600">
+              {servingData.servingSizeError}
+            </p>
+          )}
+          <label
+            htmlFor="servingsPerContainer"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
+            Porciones por envase
+          </label>
+          <input
+            type="number"
+            step="0.1"
+            min="0"
+            id="servingsPerContainer"
+            name="servingsPerContainer"
+            value={servingData.servingsPerContainer}
+            onChange={handleServingChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#93E9BE] focus:border-[#93E9BE]"
+          />
+          {servingData.servingsPerContainerError && (
+            <p className="mt-1 text-sm text-red-600">
+              {servingData.servingsPerContainerError}
+            </p>
+          )}
           <label
             htmlFor="format"
             className="block text-sm font-medium text-gray-700"
