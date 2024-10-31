@@ -24,18 +24,26 @@ export default function Dashboard() {
             <SubHeader activeTab={activeTab} setActiveTab={setActiveTab} />
             {activeTab === "ingredients" && (
               <>
-                <RawMaterialsForm DefaultRawMaterial={rawMaterial}FormName="Agregar materia prima" OnSubmit="create"/>
+                <RawMaterialsForm
+                  DefaultRawMaterial={rawMaterial}
+                  FormName="Agregar materia prima"
+                  OnSubmit="create"
+                />
                 <RawMaterialsTable />
               </>
             )}
             {activeTab === "foods" && (
               <section className="flex">
-                <FoodsForm DefaultFood={food} FormName="Agregar alimento" OnSubmit="create"/>
+                <FoodsForm
+                  DefaultFood={food}
+                  FormName="Agregar alimento"
+                  OnSubmit="create"
+                />
                 <FoodsTable />
               </section>
             )}
             {activeTab === "nutritionalTables" && (
-              <section className="flex overflow-x-clip">
+              <section className="flex overflow-x-clip overflow-y-auto">
                 <NutritionalTableForm />
                 <NutritionalTable />
               </section>
