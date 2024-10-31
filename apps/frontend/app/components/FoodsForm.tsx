@@ -22,6 +22,7 @@ export default function FoodsForm({ DefaultFood, FormName, OnSubmit }: params) {
 
   const { addFood } = useAuth();
   const { getAllRawMaterials } = useAuth();
+  const { updateFood } = useAuth();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -32,7 +33,7 @@ export default function FoodsForm({ DefaultFood, FormName, OnSubmit }: params) {
     const selectedIngredients = selectedOptions.map((option: any) => {
       return {
         rawMaterial: option.value,
-        quantity: 0, // Inicializar la cantidad en 0
+        amount: 0, // Inicializar la cantidad en 0
       };
     });
     SetSelectedIngredients(selectedIngredients);
@@ -58,22 +59,30 @@ export default function FoodsForm({ DefaultFood, FormName, OnSubmit }: params) {
   }));
 
   console.log(ingredientOptions);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(undefined);
     try {
       const food = {
+        id: newFood.id,
         name: newFood.name,
         ingredients: SelectedIngredients,
         portion: newFood.portion,
       };
-      await addFood(food);
+      if(OnSubmit === "create"){
+        await addFood(food);
+        alert("alimento creado exitosamente");
+        setNewFood({
+          name: "",
+          ingredients: [],
+          portion: undefined,
+        });
+      }else if(OnSubmit === "update"){
+        await updateFood(food);
+        alert("alimento mmodificado exitosamente");
+      }
       setFoods((prev) => [...prev, newFood]);
-      setNewFood({
-        name: "",
-        ingredients: [],
-        portion: undefined,
-      });
     } catch (err) {
       setError(
         err instanceof Error
@@ -129,6 +138,7 @@ export default function FoodsForm({ DefaultFood, FormName, OnSubmit }: params) {
             <input
               type="number"
               id="portion"
+              name="portion"
               value={newFood.portion}
               onChange={handleInputChange}
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#93E9BE] focus:border-[#93E9BE]"
@@ -147,10 +157,12 @@ export default function FoodsForm({ DefaultFood, FormName, OnSubmit }: params) {
               className="basic-multi-select"
               classNamePrefix="select"
               placeholder="Selecciona ingredientes"
-              defaultValue={SelectedIngredients.map((ingredient) => ({
-                value: ingredient.rawMaterial,
-                label: ingredient.rawMaterial.name,
-              }))}
+              defaultValue={SelectedIngredients.map((ingredient)=>(
+                {
+                  value: ingredient.rawMaterial,
+                  label: ingredient.rawMaterial.name
+                }
+              ))}
             />
             <div className="mt-4">
               <h3 className="font-bold">Ingredientes seleccionados:</h3>
@@ -171,6 +183,7 @@ export default function FoodsForm({ DefaultFood, FormName, OnSubmit }: params) {
                           }
                           className="mt-1 block w-40 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#93E9BE] focus:border-[#93E9BE]"
                           placeholder="Cantidad"
+                          defaultValue={ingredient.amount}
                         />
                       </li>
                     ))}

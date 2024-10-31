@@ -65,6 +65,8 @@ export default function RawMaterialsForm({DefaultRawMaterial,FormName,OnSubmit}:
       if(OnSubmit === "create"){
         await addRawMaterial(rawMaterialPayload);
         alert("Materia prima creada con éxito");
+        // Reset form with empty strings instead of undefined
+        setNewRawMaterial(DefaultRawMaterial);
       }else if(OnSubmit === "update"){
         await updateRawMaterial(rawMaterialPayload);
         alert("Materia prima modificada con éxito");
@@ -72,8 +74,6 @@ export default function RawMaterialsForm({DefaultRawMaterial,FormName,OnSubmit}:
       }
       setRawMaterials((prev) => [...prev, rawMaterialPayload]);
       
-      // Reset form with empty strings instead of undefined
-      setNewRawMaterial(DefaultRawMaterial);
     } catch (err) {
       setError(
         err instanceof Error

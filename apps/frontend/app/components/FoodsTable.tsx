@@ -22,7 +22,7 @@ export default function FoodsTable() {
       setError(null);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to fetch raw materials"
+        err instanceof Error ? err.message : "Failed to fetch foods"
       );
     } finally {
       setIsLoading(false);
@@ -41,15 +41,6 @@ export default function FoodsTable() {
     return <div className="text-red-500">{error}</div>;
   }
 
-  const renderValue = (value: any) => {
-    if (value === undefined || value === null) {
-      return "0";
-    }
-    if (typeof value === "number") {
-      return value.toFixed(2);
-    }
-    return value.toString();
-  };
 
   return (
     <section className="lg:w-1/2 p-8 border-t rounded-bl-xl">
