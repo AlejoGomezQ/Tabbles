@@ -29,7 +29,7 @@ export async function createFood(req, res) {
       res.status(400).json({ message: error.message });
     }
   }
-}
+};
 
 export async function getAllFoods(req, res) {
   try {
@@ -37,6 +37,24 @@ export async function getAllFoods(req, res) {
     const Foods = await Food.find({ user: userId });
 
     res.json(Foods);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+export async function updateFood(req, res) {
+  try {
+    const userId = req.user.id;
+    const food = await Food.findOneAndUpdate(
+      { id: req.params.id, user: userId },
+      req.body,
+      { new: true }
+    );
+    
+    if (!food) {
+      return res.status(404).json({ message: "Alimento no encontrado." });
+    }
+
+    res.json(food);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

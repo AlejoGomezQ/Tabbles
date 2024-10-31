@@ -33,6 +33,7 @@ interface AuthContextType {
   addFood: (food: Food) => Promise<void>;
   getAllFoods: () => Promise<Food[]>;
   updateRawMaterial: (rawMaterial: RawMaterial) => Promise<void>;
+  updateFood: (food: Food) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -326,6 +327,35 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  const updateFood = async (food : Food) =>{
+    const currentToken = token || Cookies.get("token");
+    if (!currentToken) {
+      throw new Error("No authentication token found");
+    }
+
+    try {
+      const response = await fetch("/api/update-food/" + food.id, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentToken}`,
+        },
+        body: JSON.stringify(food),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update food");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error updating food:", error);
+      throw error;
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -339,7 +369,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         getAllRawMaterials,
         addFood,
         getAllFoods,
-        updateRawMaterial
+        updateRawMaterial,
+        updateFood
       }}
     >
       {children}

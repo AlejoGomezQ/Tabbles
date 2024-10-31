@@ -3,12 +3,17 @@ import mongoose from "mongoose";
 
 const FoodSchema = new mongoose.Schema(
     {
+      id: {
+        type: String,
+        default: () => new mongoose.Types.ObjectId().toString(),
+        unique: true,
+        required: true,
+      },
       name: {
         type: String,
         required: true,
         unique: true,
       },
-      portion: Number,
       ingredients: [
         {
             rawMaterial: {
@@ -22,6 +27,7 @@ const FoodSchema = new mongoose.Schema(
             }
         },
       ],
+      portion: Number,
       user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

@@ -13,9 +13,8 @@ interface params{
   OnSubmit : string
 };
 export default function RawMaterialsForm({DefaultRawMaterial,FormName,OnSubmit}: params) {
-  
   const [newRawMaterial, setNewRawMaterial] = useState<RawMaterial>({
-    id : DefaultRawMaterial.id?  DefaultRawMaterial.id : "",
+    id : DefaultRawMaterial.id,
     name :DefaultRawMaterial.name,
     calories : DefaultRawMaterial.calories,
     proteins : DefaultRawMaterial.proteins,
@@ -34,8 +33,7 @@ export default function RawMaterialsForm({DefaultRawMaterial,FormName,OnSubmit}:
     iron: DefaultRawMaterial.iron,
     calcium: DefaultRawMaterial.calcium,
     zinc: DefaultRawMaterial.zinc,
-    water: DefaultRawMaterial.water
-  });
+    water: DefaultRawMaterial.water});
   const [RawMaterials, setRawMaterials] = useState<RawMaterial[]>([]);
   const [error, setError] = useState<string | undefined>(undefined);
   const { addRawMaterial } = useAuth();
@@ -50,10 +48,7 @@ export default function RawMaterialsForm({DefaultRawMaterial,FormName,OnSubmit}:
     e.preventDefault();
     setError(undefined);
     try {
-<<<<<<< HEAD
       // guarda los valores agregados en un objeto llamado rawMaterialPayload
-=======
->>>>>>> 29a8ad3c89a9302be760f3750fcf41e5a4aafb44
       const rawMaterialPayload = Object.entries(newRawMaterial).reduce(
         (acc, [key, value]) => {
           // Solo agrega la clave si `value` no es una cadena vacía ni undefined
@@ -69,17 +64,16 @@ export default function RawMaterialsForm({DefaultRawMaterial,FormName,OnSubmit}:
       );
       if(OnSubmit === "create"){
         await addRawMaterial(rawMaterialPayload);
+        alert("Materia prima creada con éxito");
       }else if(OnSubmit === "update"){
         await updateRawMaterial(rawMaterialPayload);
+        alert("Materia prima modificada con éxito");
+        
       }
       setRawMaterials((prev) => [...prev, rawMaterialPayload]);
-
-<<<<<<< HEAD
+      
       // Reset form with empty strings instead of undefined
       setNewRawMaterial(DefaultRawMaterial);
-=======
-      setNewRawMaterial(initialState);
->>>>>>> 29a8ad3c89a9302be760f3750fcf41e5a4aafb44
     } catch (err) {
       setError(
         err instanceof Error
