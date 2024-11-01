@@ -10,7 +10,7 @@ import {
 
 import { createUser, login } from "../controllers/UsersController.mjs";
 import { authenticateToken } from "../middleware/auth.mjs";
-import { createFood, getAllFoods ,updateFood} from "../controllers/FoodsController.mjs";
+import { createFood, getAllFoods ,updateFood, deleteFood} from "../controllers/FoodsController.mjs";
 const router = Router();
 
 router.use(authenticateToken);
@@ -29,5 +29,6 @@ router.delete("/raw-material/:id", deleteRawMaterial);
 router.post("/food", createFood);
 router.get("/foods", getAllFoods);
 router.put("/food/:id", updateFood);
+router.delete("/food/:id", deleteFood);
 
 export default router;

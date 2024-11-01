@@ -12,7 +12,7 @@ export default function FoodsTable() {
   const [Foods, setFoods] = useState<Food[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { getAllFoods } = useAuth();
+  const { getAllFoods, deleteFood } = useAuth();
 
   const fetchFoods = useCallback(async () => {
     setIsLoading(true);
@@ -31,7 +31,23 @@ export default function FoodsTable() {
 
   useEffect(() => {
     fetchFoods();
-  }, [getAllFoods]);
+  }, [fetchFoods]);
+
+  const handleDelete = useCallback(
+    async (id: string) => {
+      try {
+        await deleteFood(id);
+        await fetchFoods();
+      } catch (error) {
+        setError(
+          error instanceof Error
+            ? error.message
+            : "Failed to food"
+        );
+      }
+    },
+    [deleteFood, fetchFoods]
+  );
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -68,7 +84,10 @@ export default function FoodsTable() {
               {Foods.map((food, index) => (
                 <tr key={index}>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <button className="text-red-600 hover:text-red-900 transition-colors duration-200 flex items-center">
+                    <button className="text-red-600 hover:text-red-900 transition-colors duration-200 flex items-center"
+                      onClick={() =>
+                        food.id && handleDelete(food.id)}
+                    >
                       <Trash2 className="w-5 h-5 mr-1" />
                       <span className="hidden">Eliminar</span>
                     </button>

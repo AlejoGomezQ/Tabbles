@@ -34,6 +34,7 @@ interface AuthContextType {
   getAllFoods: () => Promise<Food[]>;
   updateRawMaterial: (rawMaterial: RawMaterial) => Promise<void>;
   updateFood: (food: Food) => Promise<void>;
+  deleteFood: (id: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -355,6 +356,36 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       throw error;
     }
   };
+  
+  const deleteFood = async (id: string) => {
+    const currentToken = token || Cookies.get("token");
+    if (!currentToken) {
+      throw new Error("No authentication token found");
+    }
+
+    try {
+      const response = await fetch(`/api/delete-food/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to delete food");
+      }
+
+      const data = await response.json();
+      console.log(data);
+      return data;
+
+    } catch (error) {
+      console.error("Error deleting food:", error);
+      throw error;
+    }
+  };
 
   return (
     <AuthContext.Provider
@@ -370,7 +401,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         addFood,
         getAllFoods,
         updateRawMaterial,
-        updateFood
+        updateFood,
+        deleteFood
       }}
     >
       {children}

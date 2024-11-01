@@ -59,3 +59,25 @@ export async function updateFood(req, res) {
     res.status(500).json({ message: error.message });
   }
 }
+export async function deleteFood(req, res) {
+  try {
+    const userId = req.user.id;
+    const food = await Food.findOneAndDelete({
+      id: req.params.id,
+      user: userId,
+    });
+
+    if (!food) {
+      return res.status(404).json({ message: "Alimento no encontrado." });
+    }
+
+    // Remove the raw material from the user's list
+    await User.findByIdAndUpdate(userId, {
+      $pull: { Foods: req.params.id },
+    });
+
+    res.json({ message: "Alimento Eliminado exitosamente" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
