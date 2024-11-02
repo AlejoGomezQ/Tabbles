@@ -12,7 +12,7 @@ export default function FoodsTable() {
   const [Foods, setFoods] = useState<Food[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { getAllFoods, deleteFood } = useAuth();
+  const { getAllFoods, deleteFood} = useAuth();
 
   const fetchFoods = useCallback(async () => {
     setIsLoading(true);

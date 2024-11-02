@@ -30,6 +30,7 @@ interface AuthContextType {
   addRawMaterial: (rawMaterial: RawMaterial) => Promise<void>;
   deleteRawMaterial: (id: string) => Promise<void>;
   getAllRawMaterials: () => Promise<RawMaterial[]>;
+  getRawMaterial: (id : string) => Promise<RawMaterial>;
   addFood: (food: Food) => Promise<void>;
   getAllFoods: () => Promise<Food[]>;
   updateRawMaterial: (rawMaterial: RawMaterial) => Promise<void>;
@@ -244,6 +245,33 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       throw error;
     }
   };
+
+  const getRawMaterial = async (id : string): Promise<RawMaterial>=>{
+    const currentToken = token || Cookies.get("token");
+    if (!currentToken) {
+      throw new Error("No authentication token found");
+    }
+
+    try {
+      const response = await fetch("/api/get-raw-material/" + id, {
+        headers: {
+          Authorization: `Bearer ${currentToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to fetch raw material");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching raw material:", error);
+      throw error;
+    }
+  }
+
   const updateRawMaterial = async (rawMaterial:RawMaterial) =>{
     const currentToken = token || Cookies.get("token");
     if (!currentToken) {
@@ -398,6 +426,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         addRawMaterial,
         deleteRawMaterial,
         getAllRawMaterials,
+        getRawMaterial,
         addFood,
         getAllFoods,
         updateRawMaterial,

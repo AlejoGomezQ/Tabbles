@@ -34,7 +34,7 @@ export async function createFood(req, res) {
 export async function getAllFoods(req, res) {
   try {
     const userId = req.user.id;
-    const Foods = await Food.find({ user: userId });
+    const Foods = await Food.find({ user: userId }).populate("ingredients.rawMaterial");
 
     res.json(Foods);
   } catch (error) {
