@@ -12,9 +12,6 @@ import Cookies from "js-cookie";
 import { User } from "../models/user";
 import { RawMaterial } from "../models/rawMaterial";
 import { Food } from "../models/food";
-import { promises } from "dns";
-import { AUTOMATIC_FONT_OPTIMIZATION_MANIFEST } from "next/dist/shared/lib/constants";
-import { rawMaterial } from "../const/rawMaterial";
 
 interface AuthContextType {
   user: User | null;
@@ -30,6 +27,7 @@ interface AuthContextType {
   addRawMaterial: (rawMaterial: RawMaterial) => Promise<void>;
   deleteRawMaterial: (id: string) => Promise<void>;
   getAllRawMaterials: () => Promise<RawMaterial[]>;
+  getRawMaterialById: (id: string) => Promise<RawMaterial>;
   addFood: (food: Food) => Promise<void>;
   getAllFoods: () => Promise<Food[]>;
   updateRawMaterial: (rawMaterial: RawMaterial) => Promise<void>;
@@ -244,21 +242,39 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       throw error;
     }
   };
-  const updateRawMaterial = async (rawMaterial:RawMaterial) =>{
+
+  const getRawMaterialById = async (id: string): Promise<RawMaterial> => {
+    const response = await fetch(`/api/raw-material/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch raw material");
+    }
+
+    return response.json();
+  };
+
+  const updateRawMaterial = async (rawMaterial: RawMaterial) => {
     const currentToken = token || Cookies.get("token");
     if (!currentToken) {
       throw new Error("No authentication token found");
     }
 
     try {
-      const response = await fetch("/api/update-raw-material/" + rawMaterial.id, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${currentToken}`,
-        },
-        body: JSON.stringify(rawMaterial),
-      });
+      const response = await fetch(
+        "/api/update-raw-material/" + rawMaterial.id,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${currentToken}`,
+          },
+          body: JSON.stringify(rawMaterial),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -271,7 +287,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       console.error("Error updating raw material:", error);
       throw error;
     }
-  }
+  };
 
   const addFood = async (food: Food) => {
     const currentToken = token || Cookies.get("token");
@@ -328,7 +344,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  const updateFood = async (food : Food) =>{
+  const updateFood = async (food: Food) => {
     const currentToken = token || Cookies.get("token");
     if (!currentToken) {
       throw new Error("No authentication token found");
@@ -356,7 +372,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       throw error;
     }
   };
-  
+
   const deleteFood = async (id: string) => {
     const currentToken = token || Cookies.get("token");
     if (!currentToken) {
@@ -380,7 +396,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       const data = await response.json();
       console.log(data);
       return data;
-
     } catch (error) {
       console.error("Error deleting food:", error);
       throw error;
@@ -398,11 +413,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         addRawMaterial,
         deleteRawMaterial,
         getAllRawMaterials,
+        getRawMaterialById,
         addFood,
         getAllFoods,
         updateRawMaterial,
         updateFood,
-        deleteFood
+        deleteFood,
       }}
     >
       {children}

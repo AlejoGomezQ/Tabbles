@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../context/AuthContext";
-import Select, { ActionMeta, GroupBase, SingleValue } from "react-select";
+import Select, { SingleValue } from "react-select";
 import { Food } from "../models/food";
 
 interface FormatOption {
@@ -17,7 +17,18 @@ interface ServingData {
   servingsPerContainerError: string;
 }
 
-export default function NutritionalTableForm() {
+interface NutritionalTableFormProps {
+  onSubmit: (data: {
+    food: Food;
+    servingSize: number;
+    servingsPerContainer: number;
+    format: string;
+  }) => void;
+}
+
+export default function NutritionalTableForm({
+  onSubmit,
+}: NutritionalTableFormProps) {
   const [selectedFood, setSelectedFood] = useState<Food | null>(null);
   const [selectedFormat, setSelectedFormat] = useState<FormatOption | null>(
     null
@@ -47,9 +58,7 @@ export default function NutritionalTableForm() {
       setFoods(data);
       setError(null);
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Failed to fetch raw materials"
-      );
+      setError(err instanceof Error ? err.message : "Failed to fetch foods");
     } finally {
       setIsLoading(false);
     }
@@ -57,15 +66,7 @@ export default function NutritionalTableForm() {
 
   useEffect(() => {
     fetchFoods();
-  }, [getAllFoods]);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div className="text-red-500">{error}</div>;
-  }
+  }, [fetchFoods]);
 
   const handleFoodChange = (selectedOption: Food | null) => {
     setSelectedFood(selectedOption);
@@ -99,25 +100,32 @@ export default function NutritionalTableForm() {
       setError("Por favor, seleccione un alimento y un formato");
       return;
     }
-    try {
-    } catch (err) {
+    if (!servingData.servingSize || !servingData.servingsPerContainer) {
       setError(
-        err instanceof Error
-          ? err.message
-          : "Ocurrió un error al generar la tabla nutricional"
+        "Por favor, ingrese el tamaño de la porción y las porciones por envase"
       );
+      return;
     }
+
+    onSubmit({
+      food: selectedFood,
+      servingSize: parseFloat(servingData.servingSize),
+      servingsPerContainer: parseFloat(servingData.servingsPerContainer),
+      format: selectedFormat.value,
+    });
   };
 
-  const foodOptions = foods.map((food) => ({
-    ...food,
-    label: food.name,
-  }));
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="text-red-500">{error}</div>;
+  }
 
   return (
-    <section className="sticky top-0 lg:w-1/2 p-8 mb-8">
+    <section className="lg:w-1/2 p-8 mb-8">
       <h2 className="text-2xl font-bold mb-6">Generar tabla nutricional</h2>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-y-2">
           <label
@@ -128,21 +136,18 @@ export default function NutritionalTableForm() {
           </label>
           <Select
             id="food"
-            name="food"
-            isMulti={false}
-            options={foodOptions as unknown as (Food | GroupBase<Food>)[]}
+            options={foods.map((food) => ({ ...food, label: food.name }))}
             onChange={handleFoodChange}
             value={selectedFood}
             className="mt-1 block w-full"
             classNamePrefix="select"
             placeholder="Buscar alimento..."
-            defaultValue={selectedFood}
           />
           <label
             htmlFor="servingSize"
             className="block text-sm font-medium text-gray-700 mb-1"
           >
-            Tamaño de la porción
+            Tamaño de la porción (g)
           </label>
           <input
             type="number"
