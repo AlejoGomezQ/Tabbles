@@ -27,7 +27,6 @@ const FoodSchema = new mongoose.Schema(
             }
         },
       ],
-      portion: Number,
       user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

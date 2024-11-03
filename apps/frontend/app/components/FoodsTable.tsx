@@ -73,9 +73,6 @@ export default function FoodsTable() {
                   Nombre
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Tamaño porción
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Cantidad de ingredientes
                 </th>
               </tr>
@@ -97,9 +94,6 @@ export default function FoodsTable() {
                     </PopUp>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">{food.name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {food.portion}
-                  </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {food.ingredients.length}
                   </td>

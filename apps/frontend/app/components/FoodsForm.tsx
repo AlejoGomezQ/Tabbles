@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { RawMaterial } from "../models/rawMaterial";
 import Select from "react-select";
 import { Ingredient } from "../models/ingredient";
+import { toast } from 'react-toastify';
 
 interface params {
   DefaultFood: Food;
@@ -68,19 +69,25 @@ export default function FoodsForm({ DefaultFood, FormName, OnSubmit }: params) {
         id: newFood.id,
         name: newFood.name,
         ingredients: SelectedIngredients,
-        portion: newFood.portion,
       };
       if(OnSubmit === "create"){
         await addFood(food);
-        alert("alimento creado exitosamente");
+        toast.success("Alimento creado exitosamente", {
+          position: "top-center" ,
+          autoClose: 3000,
+          hideProgressBar: true
+        });
         setNewFood({
           name: "",
           ingredients: [],
-          portion: undefined,
         });
       }else if(OnSubmit === "update"){
         await updateFood(food);
-        alert("alimento mmodificado exitosamente");
+        toast.success("Alimento modificado exitosamente", {
+          position: "top-center" ,
+          autoClose: 3000,
+          hideProgressBar: true
+        });
       }
       setFoods((prev) => [...prev, newFood]);
     } catch (err) {
@@ -129,20 +136,6 @@ export default function FoodsForm({ DefaultFood, FormName, OnSubmit }: params) {
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#93E9BE] focus:border-[#93E9BE]"
               required
             />
-            <label
-              htmlFor="portion"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Tamaño de la porción
-            </label>
-            <input
-              type="number"
-              id="portion"
-              name="portion"
-              value={newFood.portion}
-              onChange={handleInputChange}
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#93E9BE] focus:border-[#93E9BE]"
-            ></input>
             <label
               htmlFor="Ingredients"
               className="block text-sm font-medium text-gray-700"

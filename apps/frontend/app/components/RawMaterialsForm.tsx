@@ -5,7 +5,7 @@ import { RawMaterial } from "../models/rawMaterial";
 import { useAuth } from "../context/AuthContext";
 import { spanishLabels } from "../utils/spanishLabels";
 import { rawMaterial } from "../const/rawMaterial";
-
+import { toast } from 'react-toastify';
 
 interface params{
   DefaultRawMaterial : RawMaterial,
@@ -64,13 +64,20 @@ export default function RawMaterialsForm({DefaultRawMaterial,FormName,OnSubmit}:
       );
       if(OnSubmit === "create"){
         await addRawMaterial(rawMaterialPayload);
-        alert("Materia prima creada con éxito");
+        toast.success("Materia prima creada exitosamente", {
+          position: "top-center" ,
+          autoClose: 3000,
+          hideProgressBar: true
+        });
         // Reset form with empty strings instead of undefined
         setNewRawMaterial(DefaultRawMaterial);
       }else if(OnSubmit === "update"){
         await updateRawMaterial(rawMaterialPayload);
-        alert("Materia prima modificada con éxito");
-        
+        toast.success("Materia prima modificada exitosamente", {
+          position: "top-center" ,
+          autoClose: 3000,
+          hideProgressBar: true
+        })
       }
       setRawMaterials((prev) => [...prev, rawMaterialPayload]);
       
