@@ -165,7 +165,7 @@ export default function FoodsForm({ DefaultFood, FormName, OnSubmit }: params) {
                     {SelectedIngredients.map((ingredient) => (
                       <li>
                         <label className="block text-sm font-medium text-gray-700">
-                          {ingredient.rawMaterial.name}
+                          cantidad en gramos de {ingredient.rawMaterial.name}
                         </label>
                         <input
                           type="number"
