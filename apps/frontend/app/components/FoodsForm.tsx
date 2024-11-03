@@ -5,7 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { RawMaterial } from "../models/rawMaterial";
 import Select from "react-select";
 import { Ingredient } from "../models/ingredient";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 interface params {
   DefaultFood: Food;
@@ -59,8 +59,6 @@ export default function FoodsForm({ DefaultFood, FormName, OnSubmit }: params) {
     label: ingredient.name,
   }));
 
-  console.log(ingredientOptions);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(undefined);
@@ -70,23 +68,23 @@ export default function FoodsForm({ DefaultFood, FormName, OnSubmit }: params) {
         name: newFood.name,
         ingredients: SelectedIngredients,
       };
-      if(OnSubmit === "create"){
+      if (OnSubmit === "create") {
         await addFood(food);
         toast.success("Alimento creado exitosamente", {
-          position: "top-center" ,
+          position: "top-center",
           autoClose: 3000,
-          hideProgressBar: true
+          hideProgressBar: true,
         });
         setNewFood({
           name: "",
           ingredients: [],
         });
-      }else if(OnSubmit === "update"){
+      } else if (OnSubmit === "update") {
         await updateFood(food);
         toast.success("Alimento modificado exitosamente", {
-          position: "top-center" ,
+          position: "top-center",
           autoClose: 3000,
-          hideProgressBar: true
+          hideProgressBar: true,
         });
       }
       setFoods((prev) => [...prev, newFood]);
@@ -150,12 +148,10 @@ export default function FoodsForm({ DefaultFood, FormName, OnSubmit }: params) {
               className="basic-multi-select"
               classNamePrefix="select"
               placeholder="Selecciona ingredientes"
-              defaultValue={SelectedIngredients.map((ingredient)=>(
-                {
-                  value: ingredient.rawMaterial,
-                  label: ingredient.rawMaterial.name
-                }
-              ))}
+              defaultValue={SelectedIngredients.map((ingredient) => ({
+                value: ingredient.rawMaterial,
+                label: ingredient.rawMaterial.name,
+              }))}
             />
             <div className="mt-4">
               <h3 className="font-bold">Ingredientes seleccionados:</h3>
@@ -165,7 +161,7 @@ export default function FoodsForm({ DefaultFood, FormName, OnSubmit }: params) {
                     {SelectedIngredients.map((ingredient) => (
                       <li>
                         <label className="block text-sm font-medium text-gray-700">
-                          cantidad en gramos de {ingredient.rawMaterial.name}
+                          Cantidad de {ingredient.rawMaterial.name} (g)
                         </label>
                         <input
                           type="number"

@@ -11,6 +11,7 @@ import NutritionalTable from "../../components/NutritionalTable";
 import NutritionalTableForm from "../../components/NutritionalTableForm";
 import { rawMaterial } from "../../const/rawMaterial";
 import { food } from "../../const/food";
+import NutritionalTableGenerator from "../../components/NutritionalTableGenerator";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("ingredients");
@@ -42,12 +43,7 @@ export default function Dashboard() {
                 <FoodsTable />
               </section>
             )}
-            {activeTab === "nutritionalTables" && (
-              <section className="flex overflow-x-clip overflow-y-auto">
-                <NutritionalTableForm />
-                <NutritionalTable />
-              </section>
-            )}
+            {activeTab === "nutritionalTables" && <NutritionalTableGenerator />}
           </div>
         </div>
       </main>
