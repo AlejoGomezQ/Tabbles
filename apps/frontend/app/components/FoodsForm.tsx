@@ -114,7 +114,7 @@ export default function FoodsForm({ DefaultFood, FormName, OnSubmit }: params) {
 
   return (
     <>
-      <section className="lg:w-1/2 p-8 mb-8">
+      <section className="p-8 mb-8 overflow-y-auto">
         <h2 className="text-2xl font-bold mb-6">{FormName}</h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
@@ -131,7 +131,7 @@ export default function FoodsForm({ DefaultFood, FormName, OnSubmit }: params) {
               name="name"
               value={newFood.name}
               onChange={handleInputChange}
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#93E9BE] focus:border-[#93E9BE]"
+              className="mt-1 block border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#93E9BE] focus:border-[#93E9BE]"
               required
             />
             <label

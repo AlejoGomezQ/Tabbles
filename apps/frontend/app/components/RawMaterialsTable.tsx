@@ -7,7 +7,7 @@ import { RawMaterial } from "../models/rawMaterial";
 import { spanishLabels } from "../utils/spanishLabels";
 import { useAuth } from "../context/AuthContext";
 import { Trash2 } from "lucide-react";
-import { Edit } from "lucide-react";
+import { Edit2 } from "lucide-react";
 
 export default function RawMaterialsTable() {
   const [rawMaterials, setRawMaterials] = useState<RawMaterial[]>([]);
@@ -38,7 +38,7 @@ export default function RawMaterialsTable() {
     async (id: string) => {
       try {
         await deleteRawMaterial(id);
-        await getAllRawMaterials();
+        await fetchRawMaterials();
       } catch (error) {
         setError(
           error instanceof Error
@@ -69,7 +69,7 @@ export default function RawMaterialsTable() {
   };
 
   return (
-    <section className="overflow-y-auto p-8 border-t rounded-bl-xl">
+    <section className=" p-8 border-t rounded-bl-xl">
       <h2 className="text-2xl font-bold mb-6">Tabla de materias primas</h2>
       <div className="overflow-x-auto">
         <div className="max-h-64 overflow-y-auto">
@@ -105,8 +105,8 @@ export default function RawMaterialsTable() {
 
                     <PopUp
                       trigger={
-                        <Edit className="w-5 h-5 mr-1 cursor-pointer"></Edit>
-                      }
+                          <Edit2 className="w-5 h-5 mr-1 mb-1 cursor-pointer" />
+                      } 
                     >
                       <RawMaterialsForm
                         DefaultRawMaterial={rawMaterial}

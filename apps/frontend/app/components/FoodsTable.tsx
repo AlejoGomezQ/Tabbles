@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Food } from "../models/food";
 import { useAuth } from "../context/AuthContext";
 import { Trash2 } from "lucide-react";
-import { Edit } from "lucide-react";
+import { Edit2 } from "lucide-react";
 import FoodsForm from "./FoodsForm";
 
 export default function FoodsTable() {
@@ -59,10 +59,10 @@ export default function FoodsTable() {
 
 
   return (
-    <section className="lg:w-1/2 p-8 border-t rounded-bl-xl">
+    <section className="p-8 border-t rounded-bl-xl overflow-y-auto">
       <h2 className="text-2xl font-bold mb-6">Tabla de alimentos</h2>
-      <div className="overflow-x-auto">
-        <div className="max-h-64 overflow-y-auto">
+      <div>
+        <div>
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50 sticky top-0">
               <tr>
@@ -89,7 +89,7 @@ export default function FoodsTable() {
                       <span className="hidden">Eliminar</span>
                     </button>
 
-                    <PopUp trigger={<Edit className="w-5 h-5 mr-1"></Edit>}>
+                    <PopUp trigger={<Edit2 className="w-5 h-5 mr-1"/>}>
                       <FoodsForm DefaultFood={food} FormName="Modificar Alimento" OnSubmit="update"></FoodsForm>
                     </PopUp>
                   </td>

@@ -34,7 +34,7 @@ export default function Dashboard() {
               </>
             )}
             {activeTab === "foods" && (
-              <section className="flex">
+              <section className="grid grid-cols-2 overflow-hidden">
                 <FoodsForm
                   DefaultFood={food}
                   FormName="Agregar alimento"
