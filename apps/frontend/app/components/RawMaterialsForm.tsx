@@ -12,6 +12,44 @@ interface params {
   FormName: string;
   OnSubmit: string;
 }
+
+/**
+ * Componente `RawMaterialsForm` para gestionar la creación y actualización de materias primas en la aplicación Tabbles.
+ * Permite a los usuarios ingresar y modificar los datos nutricionales de una materia prima, enviando los datos al contexto de autenticación para su almacenamiento.
+ *
+ * @param {Object} params - Parámetros del componente.
+ * @param {RawMaterial} params.DefaultRawMaterial - Valores predeterminados de la materia prima.
+ * @param {string} params.FormName - Nombre que se muestra en el encabezado del formulario.
+ * @param {"create" | "update"} params.OnSubmit - Tipo de operación: "create" para agregar una nueva materia prima o "update" para actualizar una existente.
+ *
+ * @returns {JSX.Element} Retorna un formulario interactivo en un elemento JSX.
+ *
+ * Ejemplo de uso:
+ *
+ * ```jsx
+ * import RawMaterialsForm from "./RawMaterialsForm";
+ * import { RawMaterial } from "../models/rawMaterial";
+ *
+ * const defaultMaterial = {
+ *   id: "123",
+ *   name: "Ejemplo de Materia Prima",
+ *   calories: 100,
+ *   proteins: 5,
+ *   totalFats: 2,
+ *   // ...otros valores
+ * };
+ *
+ * export default function App() {
+ *   return (
+ *     <RawMaterialsForm
+ *       DefaultRawMaterial={defaultMaterial}
+ *       FormName="Agregar Materia Prima"
+ *       OnSubmit="create"
+ *     />
+ *   );
+ * }
+ * ```
+ */
 export default function RawMaterialsForm({
   DefaultRawMaterial,
   FormName,
@@ -53,10 +91,8 @@ export default function RawMaterialsForm({
     e.preventDefault();
     setError(undefined);
     try {
-      // guarda los valores agregados en un objeto llamado rawMaterialPayload
       const rawMaterialPayload = Object.entries(newRawMaterial).reduce(
         (acc, [key, value]) => {
-          // Solo agrega la clave si `value` no es una cadena vacía ni undefined
           if (value !== "" && value !== undefined && value !== null) {
             return {
               ...acc,
@@ -66,9 +102,9 @@ export default function RawMaterialsForm({
                   : parseFloat(value as string),
             };
           }
-          return acc; // Si `value` es vacío o undefined, no se agrega al objeto
+          return acc;
         },
-        {} as RawMaterial // Usa `Partial` para permitir propiedades opcionales
+        {} as RawMaterial
       );
       if (OnSubmit === "create") {
         await addRawMaterial(rawMaterialPayload);
@@ -77,7 +113,6 @@ export default function RawMaterialsForm({
           autoClose: 3000,
           hideProgressBar: true,
         });
-        // Reset form with empty strings instead of undefined
         setNewRawMaterial(DefaultRawMaterial);
       } else if (OnSubmit === "update") {
         await updateRawMaterial(rawMaterialPayload);

@@ -5,6 +5,27 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
 import Link from "next/link";
 
+/**
+ * Componente `RegisterForm` que permite a los usuarios crear una cuenta en la aplicación Tabbles.
+ * Recoge el nombre, apellido, correo electrónico y contraseña del usuario y envía los datos al contexto de autenticación para crear una cuenta.
+ * Redirige al usuario a la página de inicio de sesión en caso de éxito, y muestra un mensaje de error si la operación falla.
+ *
+ * @returns {JSX.Element} Retorna un formulario de registro en un elemento JSX.
+ *
+ * Ejemplo de uso:
+ *
+ * ```jsx
+ * import RegisterForm from "./RegisterForm";
+ *
+ * export default function App() {
+ *   return (
+ *     <div>
+ *       <RegisterForm />
+ *     </div>
+ *   );
+ * }
+ * ```
+ */
 export default function RegisterForm() {
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");

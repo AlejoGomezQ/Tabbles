@@ -10,6 +10,7 @@
     "start:frontend": "cd apps/frontend && dev"
   },
   "devDependencies": {
+    "jsdoc": "^4.0.4",
     "prettier": "^3.2.5",
     "turbo": "^2.1.2",
     "typescript": "^5.4.5"

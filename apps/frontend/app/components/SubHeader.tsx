@@ -1,12 +1,28 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 
 interface SubHeaderProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
 }
 
+/**
+ * Componente de la página de Login que muestra un formulario de inicio de sesión y una sección de bienvenida.
+ *
+ * Este componente es responsable de renderizar la interfaz de usuario de la página de inicio de sesión.
+ * Incluye una sección de bienvenida (`HeroSection`) y un formulario de inicio de sesión (`LoginForm`).
+ *
+ * @returns {JSX.Element} El componente de la página de Login renderizado.
+ *
+ * @example
+ * // Ejemplo de uso del componente LoginPage
+ * import LoginPage from './LoginPage';
+ *
+ * function App() {
+ *   return <LoginPage />;
+ * }
+ */
 export default function SubHeader({ activeTab, setActiveTab }: SubHeaderProps) {
   return (
     <>

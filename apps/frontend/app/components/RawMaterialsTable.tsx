@@ -9,6 +9,26 @@ import { useAuth } from "../context/AuthContext";
 import { Trash2 } from "lucide-react";
 import { Edit2 } from "lucide-react";
 
+/**
+ * Componente `RawMaterialsTable` para mostrar una tabla de materias primas.
+ * Permite listar, actualizar y eliminar registros de materias primas a través de una interfaz interactiva.
+ *
+ * @returns {JSX.Element} Retorna un elemento JSX que representa la tabla de materias primas con opciones de edición y eliminación.
+ *
+ * Ejemplo de uso:
+ *
+ * ```jsx
+ * import RawMaterialsTable from "./RawMaterialsTable";
+ *
+ * export default function App() {
+ *   return (
+ *     <div>
+ *       <RawMaterialsTable />
+ *     </div>
+ *   );
+ * }
+ * ```
+ */
 export default function RawMaterialsTable() {
   const [rawMaterials, setRawMaterials] = useState<RawMaterial[]>([]);
   const [error, setError] = useState<string | null>(null);

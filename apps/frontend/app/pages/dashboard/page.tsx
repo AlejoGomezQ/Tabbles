@@ -7,12 +7,30 @@ import RawMaterialsTable from "../../components/RawMaterialsTable";
 import { useState } from "react";
 import FoodsForm from "../../components/FoodsForm";
 import FoodsTable from "../../components/FoodsTable";
-import NutritionalTable from "../../components/NutritionalTable";
-import NutritionalTableForm from "../../components/NutritionalTableForm";
 import { rawMaterial } from "../../const/rawMaterial";
 import { food } from "../../const/food";
 import NutritionalTableGenerator from "../../components/NutritionalTableGenerator";
 
+/**
+ * Componente de React que representa el panel de control de la aplicación.
+ * Proporciona una interfaz para gestionar materias primas, alimentos y generar tablas nutricionales.
+ * Permite cambiar entre diferentes pestañas: "ingredients", "foods" y "nutritionalTables".
+ *
+ * @returns {JSX.Element} El componente del panel de control, que incluye formularios y tablas para
+ * la gestión de materias primas y alimentos, además de un generador de tablas nutricionales.
+ *
+ * @example
+ * // Ejemplo de uso en la aplicación
+ * import Dashboard from "../path/to/Dashboard";
+ *
+ * function App() {
+ *   return (
+ *     <div>
+ *       <Dashboard />
+ *     </div>
+ *   );
+ * }
+ */
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("ingredients");
 

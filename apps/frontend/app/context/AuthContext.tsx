@@ -35,6 +35,27 @@ interface AuthContextType {
   deleteFood: (id: string) => Promise<void>;
 }
 
+/**
+ * Componente de React que provee el contexto de autenticación y gestión de recursos para la aplicación.
+ * Este componente maneja la autenticación del usuario, permite realizar operaciones de login,
+ * registro, cierre de sesión, y proporciona funciones CRUD para gestionar materias primas y alimentos.
+ *
+ * @param {object} props - Propiedades del componente.
+ * @param {ReactNode} props.children - Elementos hijos que se incluirán dentro del proveedor.
+ * @returns {JSX.Element} El proveedor de contexto de autenticación que encapsula la aplicación.
+ *
+ * @example
+ * // Ejemplo de uso en un componente de la aplicación
+ * import { AuthProvider } from "../context/AuthProvider";
+ *
+ * function App() {
+ *   return (
+ *     <AuthProvider>
+ *       <MiAplicacion />
+ *     </AuthProvider>
+ *   );
+ * }
+ */
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
