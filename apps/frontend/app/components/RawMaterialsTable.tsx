@@ -69,9 +69,9 @@ export default function RawMaterialsTable() {
   };
 
   return (
-    <section className=" p-8 border-t rounded-bl-xl">
+    <section className="h-1/2 p-8 border-t rounded-bl-xl overflow-x-auto">
       <h2 className="text-2xl font-bold mb-6">Tabla de materias primas</h2>
-      <div className="overflow-x-auto">
+      <div className="">
         <div className="max-h-64 overflow-y-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50 sticky top-0">
@@ -105,8 +105,8 @@ export default function RawMaterialsTable() {
 
                     <PopUp
                       trigger={
-                          <Edit2 className="w-5 h-5 mr-1 mb-1 cursor-pointer" />
-                      } 
+                        <Edit2 className="w-5 h-5 mr-1 mb-1 cursor-pointer" />
+                      }
                     >
                       <RawMaterialsForm
                         DefaultRawMaterial={rawMaterial}

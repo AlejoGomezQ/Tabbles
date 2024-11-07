@@ -5,19 +5,23 @@ import { RawMaterial } from "../models/rawMaterial";
 import { useAuth } from "../context/AuthContext";
 import { spanishLabels } from "../utils/spanishLabels";
 import { rawMaterial } from "../const/rawMaterial";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
-interface params{
-  DefaultRawMaterial : RawMaterial,
-  FormName: string,
-  OnSubmit : string
-};
-export default function RawMaterialsForm({DefaultRawMaterial,FormName,OnSubmit}: params) {
+interface params {
+  DefaultRawMaterial: RawMaterial;
+  FormName: string;
+  OnSubmit: string;
+}
+export default function RawMaterialsForm({
+  DefaultRawMaterial,
+  FormName,
+  OnSubmit,
+}: params) {
   const [newRawMaterial, setNewRawMaterial] = useState<RawMaterial>({
-    id : DefaultRawMaterial.id,
-    name :DefaultRawMaterial.name,
-    calories : DefaultRawMaterial.calories,
-    proteins : DefaultRawMaterial.proteins,
+    id: DefaultRawMaterial.id,
+    name: DefaultRawMaterial.name,
+    calories: DefaultRawMaterial.calories,
+    proteins: DefaultRawMaterial.proteins,
     totalFats: DefaultRawMaterial.totalFats,
     carbohydrates: DefaultRawMaterial.carbohydrates,
     saturatedFats: DefaultRawMaterial.saturatedFats,
@@ -33,11 +37,12 @@ export default function RawMaterialsForm({DefaultRawMaterial,FormName,OnSubmit}:
     iron: DefaultRawMaterial.iron,
     calcium: DefaultRawMaterial.calcium,
     zinc: DefaultRawMaterial.zinc,
-    water: DefaultRawMaterial.water});
+    water: DefaultRawMaterial.water,
+  });
   const [RawMaterials, setRawMaterials] = useState<RawMaterial[]>([]);
   const [error, setError] = useState<string | undefined>(undefined);
   const { addRawMaterial } = useAuth();
-  const {updateRawMaterial} = useAuth();
+  const { updateRawMaterial } = useAuth();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -55,32 +60,34 @@ export default function RawMaterialsForm({DefaultRawMaterial,FormName,OnSubmit}:
           if (value !== "" && value !== undefined && value !== null) {
             return {
               ...acc,
-              [key]: (key === "name" || key === "id") ? value : parseFloat(value as string),
+              [key]:
+                key === "name" || key === "id"
+                  ? value
+                  : parseFloat(value as string),
             };
           }
           return acc; // Si `value` es vacío o undefined, no se agrega al objeto
         },
         {} as RawMaterial // Usa `Partial` para permitir propiedades opcionales
       );
-      if(OnSubmit === "create"){
+      if (OnSubmit === "create") {
         await addRawMaterial(rawMaterialPayload);
         toast.success("Materia prima creada exitosamente", {
-          position: "top-center" ,
+          position: "top-center",
           autoClose: 3000,
-          hideProgressBar: true
+          hideProgressBar: true,
         });
         // Reset form with empty strings instead of undefined
         setNewRawMaterial(DefaultRawMaterial);
-      }else if(OnSubmit === "update"){
+      } else if (OnSubmit === "update") {
         await updateRawMaterial(rawMaterialPayload);
         toast.success("Materia prima modificada exitosamente", {
-          position: "top-center" ,
+          position: "top-center",
           autoClose: 3000,
-          hideProgressBar: true
-        })
+          hideProgressBar: true,
+        });
       }
       setRawMaterials((prev) => [...prev, rawMaterialPayload]);
-      
     } catch (err) {
       setError(
         err instanceof Error
@@ -91,7 +98,7 @@ export default function RawMaterialsForm({DefaultRawMaterial,FormName,OnSubmit}:
   };
 
   return (
-    <section className="overflow-y-auto p-8 mb-8">
+    <section className="h-1/2 overflow-y-auto p-8 mb-8">
       <h2 className="text-2xl font-bold mb-6">{FormName}</h2>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -118,7 +125,8 @@ export default function RawMaterialsForm({DefaultRawMaterial,FormName,OnSubmit}:
         <div className="grid grid-rows-2 grid-cols-6 gap-4">
           {Object.entries(newRawMaterial).map(
             ([key, value]) =>
-              (key !== "name" && key !== "id" )&& (
+              key !== "name" &&
+              key !== "id" && (
                 <div key={key}>
                   <label
                     htmlFor={key}

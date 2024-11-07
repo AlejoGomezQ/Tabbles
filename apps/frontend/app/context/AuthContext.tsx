@@ -53,29 +53,40 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     };
   }, []);
 
-  const loadUser = () => {
+  const loadUser = async () => {
+    const storedToken = Cookies.get("token");
     const storedUser = Cookies.get("user");
-    if (storedUser) {
-      try {
-        const parsedUser = JSON.parse(storedUser);
-        setUser(parsedUser);
-      } catch (error) {
-        console.error("Error parsing stored user data:", error);
-        Cookies.remove("user");
+
+    if (storedToken) {
+      setToken(storedToken);
+      if (storedUser) {
+        try {
+          const parsedUser = JSON.parse(storedUser);
+          setUser(parsedUser);
+        } catch (error) {
+          console.error("Error parsing stored user data:", error);
+          Cookies.remove("user");
+        }
+      } else {
+        await fetchUserData(storedToken);
       }
+    } else {
+      setUser(null);
+      setToken(null);
     }
   };
 
-  const fetchUserData = async (token: string) => {
+  const fetchUserData = async (authToken: string) => {
     try {
       const response = await fetch("/api/user", {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${authToken}`,
         },
       });
       if (response.ok) {
         const userData = await response.json();
         setUser(userData);
+        Cookies.set("user", JSON.stringify(userData), { expires: 7 });
       } else {
         console.error("Failed to fetch user data:", await response.text());
         Cookies.remove("token");
@@ -103,17 +114,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       }
 
       const data = await response.json();
-      const userData: User = {
-        id: data.user.id,
-        name: data.user.name,
-        lastName: data.user.lastName,
-        email: data.user.email,
-      };
-
-      setUser(userData);
+      setUser(data.user);
       setToken(data.token);
-
       Cookies.set("token", data.token, { expires: 7 });
+      Cookies.set("user", JSON.stringify(data.user), { expires: 7 });
       router.push("/pages/dashboard");
     } catch (error) {
       console.error("Login error:", error);
