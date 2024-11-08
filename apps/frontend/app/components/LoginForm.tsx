@@ -1,10 +1,30 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 
 import Link from "next/link";
 
 import { useAuth } from "../context/AuthContext";
 
+/**
+ * Componente `LoginForm` que permite a los usuarios iniciar sesión en la aplicación.
+ * El formulario solicita un correo electrónico y una contraseña, y gestiona el proceso de inicio de sesión.
+ * En caso de error, muestra un mensaje de error en la interfaz de usuario.
+ *
+ * @component
+ * @returns {JSX.Element} Un formulario de inicio de sesión con campos de correo electrónico y contraseña,
+ *                         un botón de inicio de sesión y un enlace para registrarse o recuperar la contraseña.
+ *
+ * @example
+ * import LoginForm from './LoginForm';
+ *
+ * export default function App() {
+ *   return (
+ *     <div>
+ *       <LoginForm />
+ *     </div>
+ *   );
+ * }
+ */
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

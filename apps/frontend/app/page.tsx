@@ -2,8 +2,9 @@
 import React from "react";
 
 import Header from "./components/PrincipalHeader";
-import Cards from "./components/Cards";
+
 import MainSection from "./components/MainSection";
+import Cards from "./components/Cards";
 
 export default function HomePage() {
   return (

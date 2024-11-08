@@ -1,6 +1,6 @@
 "use client";
 import { Food } from "../models/food";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { RawMaterial } from "../models/rawMaterial";
 import Select from "react-select";
@@ -12,6 +12,31 @@ interface params {
   FormName: string;
   OnSubmit: string;
 }
+
+/**
+ * Componente `FoodsForm` que maneja la creación y actualización de alimentos en la base de datos.
+ * Permite ingresar el nombre del alimento y seleccionar los ingredientes, además de especificar
+ * la cantidad de cada ingrediente. Dependiendo del valor de `OnSubmit`, realiza una acción de
+ * creación o actualización del alimento.
+ *
+ * @component
+ * @param {Object} props - Propiedades del componente.
+ * @param {Food} props.DefaultFood - Objeto que contiene los datos del alimento a modificar (solo en caso de edición).
+ * @param {string} props.FormName - Nombre que se muestra en el encabezado del formulario (ej. "Crear Alimento" o "Modificar Alimento").
+ * @param {string} props.OnSubmit - Acción que define si se crea o se actualiza un alimento, con valores "create" o "update".
+ * @returns {JSX.Element} - Retorna el formulario con los campos correspondientes para crear o modificar un alimento.
+ *
+ * @example
+ * import FoodsForm from './FoodsForm';
+ *
+ * const food = { id: "1", name: "Manzana", ingredients: [{ rawMaterial: { name: "Azúcar" }, amount: 50 }] };
+ *
+ * export default function App() {
+ *   return (
+ *     <FoodsForm DefaultFood={food} FormName="Modificar Alimento" OnSubmit="update" />
+ *   );
+ * }
+ */
 export default function FoodsForm({ DefaultFood, FormName, OnSubmit }: params) {
   const [newFood, setNewFood] = useState<Food>(DefaultFood);
   const [Foods, setFoods] = useState<Food[]>([]);

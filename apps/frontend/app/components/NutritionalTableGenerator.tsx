@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import NutritionalTableForm from "../components/NutritionalTableForm";
 import NutritionalTable from "../components/NutritionalTable";
 import { Food } from "../models/food";
@@ -13,6 +13,25 @@ interface NutritionalData {
   };
 }
 
+/**
+ * Componente `NutritionalTableGenerator` que genera una tabla de datos nutricionales
+ * calculada en base a los ingredientes de un alimento. Permite a los usuarios ingresar
+ * información nutricional mediante un formulario y muestra el resultado en una tabla.
+ *
+ * @component
+ * @returns {JSX.Element} Retorna un elemento JSX que contiene el formulario para ingresar
+ * datos nutricionales y la tabla con los valores calculados.
+ *
+ * @example
+ * // Uso en un componente de Next.js
+ * import NutritionalTableGenerator from "./NutritionalTableGenerator";
+ *
+ * export default function MyPage() {
+ *   return (
+ *     <NutritionalTableGenerator />
+ *   );
+ * }
+ */
 export default function NutritionalTableGenerator() {
   const [nutritionalData, setNutritionalData] =
     useState<NutritionalData | null>(null);

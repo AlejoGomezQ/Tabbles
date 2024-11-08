@@ -1,5 +1,23 @@
 import { NextResponse } from "next/server";
 
+/**
+ * Maneja una solicitud DELETE para eliminar un alimento desde el backend.
+ *
+ * Esta función recibe una solicitud DELETE con un token de autenticación en las cabeceras.
+ * Realiza una solicitud al backend para eliminar un alimento específico usando su ID.
+ * Si no se encuentra el token o si ocurre algún error durante la operación, devuelve un mensaje adecuado de error.
+ *
+ * @param {Request} request - El objeto de solicitud HTTP que contiene las cabeceras, incluyendo el token de autenticación.
+ * @param {Object} params - Los parámetros de la solicitud.
+ * @param {string} params.id - El ID del alimento que se desea eliminar.
+ *
+ * @returns {Promise<NextResponse>} Retorna una promesa con la respuesta de Next.js que contiene los datos del alimento
+ *                                  eliminado o un mensaje de error en caso de fallo.
+ *
+ * @example
+ * // Ejemplo de uso básico de la función DELETE para eliminar un alimento por ID
+ * const response = DELETE(request, { params: { id: "12345" } });
+ */
 export async function DELETE(
   request: Request,
   { params }: { params: { id: string } }

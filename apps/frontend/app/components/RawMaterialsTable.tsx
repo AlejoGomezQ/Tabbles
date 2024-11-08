@@ -1,7 +1,7 @@
 "use client";
 
 import PopUp from "./PopUp";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import RawMaterialsForm from "./RawMaterialsForm";
 import { RawMaterial } from "../models/rawMaterial";
 import { spanishLabels } from "../utils/spanishLabels";
@@ -90,7 +90,7 @@ export default function RawMaterialsTable() {
 
   return (
     <section className="h-1/2 p-8 border-t rounded-bl-xl overflow-x-auto">
-      <h2 className="text-2xl font-bold mb-6">Tabla de materias primas</h2>
+      <h2 className="text-2xl font-bold mb-6">Tabla de ingredientes</h2>
       <div className="">
         <div className="max-h-64 overflow-y-auto">
           <table className="min-w-full divide-y divide-gray-200">
@@ -130,7 +130,7 @@ export default function RawMaterialsTable() {
                     >
                       <RawMaterialsForm
                         DefaultRawMaterial={rawMaterial}
-                        FormName="Modificar Materia Prima"
+                        FormName="Modificar ingrediente"
                         OnSubmit="update"
                       ></RawMaterialsForm>
                     </PopUp>

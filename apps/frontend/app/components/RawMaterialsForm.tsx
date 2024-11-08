@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { RawMaterial } from "../models/rawMaterial";
 import { useAuth } from "../context/AuthContext";
 import { spanishLabels } from "../utils/spanishLabels";
-import { rawMaterial } from "../const/rawMaterial";
 import { toast } from "react-toastify";
 
 interface params {
@@ -15,12 +14,12 @@ interface params {
 
 /**
  * Componente `RawMaterialsForm` para gestionar la creación y actualización de materias primas en la aplicación Tabbles.
- * Permite a los usuarios ingresar y modificar los datos nutricionales de una materia prima, enviando los datos al contexto de autenticación para su almacenamiento.
+ * Permite a los usuarios ingresar y modificar los datos nutricionales de una Ingrediente, enviando los datos al contexto de autenticación para su almacenamiento.
  *
  * @param {Object} params - Parámetros del componente.
- * @param {RawMaterial} params.DefaultRawMaterial - Valores predeterminados de la materia prima.
+ * @param {RawMaterial} params.DefaultRawMaterial - Valores predeterminados de la Ingrediente.
  * @param {string} params.FormName - Nombre que se muestra en el encabezado del formulario.
- * @param {"create" | "update"} params.OnSubmit - Tipo de operación: "create" para agregar una nueva materia prima o "update" para actualizar una existente.
+ * @param {"create" | "update"} params.OnSubmit - Tipo de operación: "create" para agregar una nueva Ingrediente o "update" para actualizar una existente.
  *
  * @returns {JSX.Element} Retorna un formulario interactivo en un elemento JSX.
  *
@@ -32,7 +31,7 @@ interface params {
  *
  * const defaultMaterial = {
  *   id: "123",
- *   name: "Ejemplo de Materia Prima",
+ *   name: "Ejemplo de Ingrediente",
  *   calories: 100,
  *   proteins: 5,
  *   totalFats: 2,
@@ -43,7 +42,7 @@ interface params {
  *   return (
  *     <RawMaterialsForm
  *       DefaultRawMaterial={defaultMaterial}
- *       FormName="Agregar Materia Prima"
+ *       FormName="Agregar Ingrediente"
  *       OnSubmit="create"
  *     />
  *   );
@@ -108,7 +107,7 @@ export default function RawMaterialsForm({
       );
       if (OnSubmit === "create") {
         await addRawMaterial(rawMaterialPayload);
-        toast.success("Materia prima creada exitosamente", {
+        toast.success("Ingrediente creado exitosamente", {
           position: "top-center",
           autoClose: 3000,
           hideProgressBar: true,
@@ -116,7 +115,7 @@ export default function RawMaterialsForm({
         setNewRawMaterial(DefaultRawMaterial);
       } else if (OnSubmit === "update") {
         await updateRawMaterial(rawMaterialPayload);
-        toast.success("Materia prima modificada exitosamente", {
+        toast.success("Ingrediente modificado exitosamente", {
           position: "top-center",
           autoClose: 3000,
           hideProgressBar: true,
@@ -127,7 +126,7 @@ export default function RawMaterialsForm({
       setError(
         err instanceof Error
           ? err.message
-          : "Ocurrió un error al agregar el RawMateriale"
+          : "Ocurrió un error al agregar el ingrediente"
       );
     }
   };

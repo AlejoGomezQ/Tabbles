@@ -1,9 +1,30 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
+/**
+ * Componente `HeroSection` que muestra una sección principal (hero) con contenido personalizado
+ * dependiendo de la ruta actual del navegador.
+ * Si el usuario está en la página de registro, muestra un mensaje de registro.
+ * Si está en la página de inicio de sesión, muestra un mensaje de inicio de sesión.
+ *
+ * @component
+ * @returns {JSX.Element | null}
+ * Retorna una sección con un mensaje y logo en función de la ruta actual. Si no se encuentra en
+ * las rutas de inicio de sesión o registro, retorna `null`.
+ *
+ * @example
+ * import HeroSection from './HeroSection';
+ *
+ * export default function App() {
+ *   return (
+ *     <div>
+ *       <HeroSection />
+ *     </div>
+ *   );
+ * }
+ */
 export default function HeroSection() {
   const currentPath = usePathname();
 

@@ -7,6 +7,30 @@ interface PopupProps {
   trigger: ReactNode;
   children: ReactNode;
 }
+
+/**
+ * Componente `PopUp` que muestra un popup modal cuando el usuario hace clic en un elemento disparador.
+ * El modal puede contener cualquier contenido que se pase como `children` y se puede cerrar al hacer clic en el botón de cierre.
+ *
+ * @component
+ * @param {object} props - Las propiedades del componente.
+ * @param {ReactNode} props.trigger - Elemento React que activa la apertura del popup cuando se hace clic.
+ * @param {ReactNode} props.children - Contenido que se muestra dentro del popup.
+ * @returns {JSX.Element} Retorna un elemento JSX que contiene el popup modal.
+ *
+ * @example
+ * // Uso en un componente de Next.js
+ * import PopUp from "./PopUp";
+ * import { Button } from "./Button";
+ *
+ * export default function MyComponent() {
+ *   return (
+ *     <PopUp trigger={<Button>Abrir Popup</Button>}>
+ *       <p>Contenido del popup.</p>
+ *     </PopUp>
+ *   );
+ * }
+ */
 export default function PopUp({ trigger, children }: PopupProps) {
   const [isOpen, setIsOpen] = useState(false);
 

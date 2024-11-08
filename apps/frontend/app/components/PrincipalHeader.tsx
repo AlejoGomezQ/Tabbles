@@ -1,10 +1,28 @@
-import React from "react";
 import { usePathname } from "next/navigation";
-
 import { useAuth } from "../context/AuthContext";
 import Link from "next/link";
 import Image from "next/image";
 
+/**
+ * Componente `Header` que muestra el encabezado de la página según la ruta actual.
+ * En la ruta de inicio ("/"), muestra un encabezado con opciones para iniciar sesión y registrarse.
+ * En la ruta del dashboard ("/pages/dashboard"), muestra un encabezado con información del usuario y un botón para cerrar sesión.
+ *
+ * @component
+ * @returns {JSX.Element|null} Retorna el encabezado correspondiente a la ruta actual o `null` si la ruta no coincide.
+ *
+ * @example
+ * // Uso en una página de Next.js
+ * import Header from "./Header";
+ *
+ * export default function HomePage() {
+ *   return (
+ *     <div>
+ *       <Header />
+ *     </div>
+ *   );
+ * }
+ */
 export default function Header() {
   const { user, logout } = useAuth();
   const currentPath = usePathname();

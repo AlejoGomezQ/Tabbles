@@ -1,5 +1,22 @@
 import { NextResponse } from "next/server";
 
+/**
+ * Maneja una solicitud POST para agregar un nuevo material al backend.
+ *
+ * Esta función recibe una solicitud POST que incluye un token de autenticación en las cabeceras y los datos del material en el cuerpo de la solicitud.
+ * Luego, realiza una solicitud al backend para agregar el material. Si no se encuentra el token o si ocurre algún error en el proceso,
+ * devuelve un mensaje adecuado de error.
+ *
+ * @param {Request} request - El objeto de solicitud HTTP que contiene las cabeceras (incluyendo el token de autenticación) y el cuerpo con los datos del material.
+ *
+ * @returns {Promise<NextResponse>} Retorna una promesa con la respuesta de Next.js que contiene los datos del material agregado
+ *                                  o un mensaje de error en caso de fallo.
+ *
+ * @example
+ * // Ejemplo de uso básico de la función POST para agregar un material
+ * const materialData = { name: "Harina", type: "Cereal", unit: "kg" };
+ * POST(request);
+ */
 export async function POST(request: Request) {
   const BASE_URL = "http://localhost:5000/api/tabbles-tables";
 

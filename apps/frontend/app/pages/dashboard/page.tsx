@@ -45,7 +45,7 @@ export default function Dashboard() {
               <>
                 <RawMaterialsForm
                   DefaultRawMaterial={rawMaterial}
-                  FormName="Agregar materia prima"
+                  FormName="Agregar ingrediente"
                   OnSubmit="create"
                 />
                 <RawMaterialsTable />

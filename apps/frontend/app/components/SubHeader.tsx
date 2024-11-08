@@ -1,7 +1,4 @@
-"use client";
-
-import React from "react";
-
+"use server ";
 interface SubHeaderProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;

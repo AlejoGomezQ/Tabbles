@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../context/AuthContext";
 import Select, { SingleValue } from "react-select";
 import { Food } from "../models/food";
@@ -26,6 +26,38 @@ interface NutritionalTableFormProps {
   }) => void;
 }
 
+/**
+ * Componente `NutritionalTableForm` que permite a los usuarios seleccionar un alimento,
+ * especificar el tamaño de la porción y el número de porciones por envase, y seleccionar
+ * un formato de tabla nutricional. Al enviar el formulario, se ejecuta una función de
+ * devolución de llamada para calcular y mostrar la tabla nutricional.
+ *
+ * @component
+ * @param {Object} props - Propiedades del componente.
+ * @param {function} props.onSubmit - Función que se ejecuta al enviar el formulario. Recibe un objeto
+ * con la información del alimento seleccionado, tamaño de la porción, porciones por envase y formato.
+ * @param {Object} props.onSubmit.data - Datos del formulario.
+ * @param {Food} props.onSubmit.data.food - Objeto `Food` que representa el alimento seleccionado.
+ * @param {number} props.onSubmit.data.servingSize - Tamaño de la porción en gramos.
+ * @param {number} props.onSubmit.data.servingsPerContainer - Número de porciones por envase.
+ * @param {string} props.onSubmit.data.format - Formato de la tabla nutricional (e.g., "spanish", "english", "both").
+ *
+ * @returns {JSX.Element} Un formulario para seleccionar un alimento, el tamaño de la porción,
+ * el número de porciones por envase y el formato de la tabla nutricional.
+ *
+ * @example
+ * import NutritionalTableForm from './NutritionalTableForm';
+ *
+ * function handleSubmit(data) {
+ *   console.log(data);
+ * }
+ *
+ * export default function App() {
+ *   return (
+ *     <NutritionalTableForm onSubmit={handleSubmit} />
+ *   );
+ * }
+ */
 export default function NutritionalTableForm({
   onSubmit,
 }: NutritionalTableFormProps) {

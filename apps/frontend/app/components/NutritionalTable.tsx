@@ -1,4 +1,3 @@
-import React from "react";
 import html2pdf from "html2pdf.js";
 import { englishLabels, spanishLabels, units } from "../const/nutritionalTable";
 
@@ -16,6 +15,47 @@ interface NutritionalTableProps {
   format: string;
 }
 
+/**
+ * Componente `NutritionalTable` que muestra una tabla nutricional con los valores de
+ * los nutrientes por cada 100g y por porción de un alimento, permitiendo la descarga
+ * de la tabla en formato PDF.
+ *
+ * @component
+ * @param {Object} props - Propiedades del componente.
+ * @param {NutritionalData} props.data - Datos nutricionales a mostrar en la tabla.
+ * Contiene las propiedades de cada nutriente con los valores por cada 100g y por porción.
+ * @param {number} props.servingSize - El tamaño de la porción en gramos.
+ * @param {number} props.servingsPerContainer - El número de porciones por envase.
+ * @param {string} props.format - El formato de la tabla nutricional (puede ser "spanish", "english" o "both").
+ *
+ * @returns {JSX.Element} Una tabla que muestra los valores nutricionales y un botón para descargar la tabla en formato PDF.
+ *
+ * @example
+ * import NutritionalTable from './NutritionalTable';
+ *
+ * const data = {
+ *   calories: { per100g: 250, perServing: 50 },
+ *   totalFats: { per100g: 10, perServing: 2 },
+ *   carbohydrates: { per100g: 30, perServing: 6 },
+ *   proteins: { per100g: 15, perServing: 3 },
+ *   // Otros nutrientes...
+ * };
+ *
+ * const format = "spanish"; // O "english" o "both"
+ * const servingSize = 100;
+ * const servingsPerContainer = 10;
+ *
+ * export default function App() {
+ *   return (
+ *     <NutritionalTable
+ *       data={data}
+ *       servingSize={servingSize}
+ *       servingsPerContainer={servingsPerContainer}
+ *       format={format}
+ *     />
+ *   );
+ * }
+ */
 export default function NutritionalTable({
   data,
   servingSize,
