@@ -2,9 +2,7 @@
 import React, { useState } from "react";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
-// Estado de la página de inicio de sesión
 import { useAuth } from "../context/AuthContext";
 
 export default function LoginForm() {
@@ -19,8 +17,6 @@ export default function LoginForm() {
     setError("");
     try {
       await login(email, password);
-      // Redirect or update UI on successful login
-      /* router.push("/pages/dashboard"); */
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "An error occurred during login"

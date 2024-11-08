@@ -34,7 +34,7 @@ export default function FoodsForm({ DefaultFood, FormName, OnSubmit }: params) {
     const selectedIngredients = selectedOptions.map((option: any) => {
       return {
         rawMaterial: option.value,
-        amount: 0, // Inicializar la cantidad en 0
+        amount: 0,
       };
     });
     SetSelectedIngredients(selectedIngredients);
@@ -100,7 +100,7 @@ export default function FoodsForm({ DefaultFood, FormName, OnSubmit }: params) {
     const fetchRawMaterials = async () => {
       try {
         const rawMaterials = await getAllRawMaterials();
-        setIngredientsOpt(rawMaterials); // Almacena las materias primas en el estado
+        setIngredientsOpt(rawMaterials);
       } catch (err) {
         setError(
           err instanceof Error

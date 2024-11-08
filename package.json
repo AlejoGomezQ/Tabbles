@@ -7,7 +7,8 @@
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "start:backend": "cd apps/backend && nodemon server.mjs",
-    "start:frontend": "cd apps/frontend && dev"
+    "start:frontend": "cd apps/frontend && dev",
+    "docs:backend": "jsdoc ./apps/backend/**/*.mjs --destination ./apps/backend/docs"
   },
   "devDependencies": {
     "jsdoc": "^4.0.4",

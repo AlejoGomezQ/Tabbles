@@ -36,28 +36,19 @@ interface AuthContextType {
 }
 
 /**
- * Componente de React que provee el contexto de autenticación y gestión de recursos para la aplicación.
- * Este componente maneja la autenticación del usuario, permite realizar operaciones de login,
- * registro, cierre de sesión, y proporciona funciones CRUD para gestionar materias primas y alimentos.
+ * Contexto de autenticación que maneja el estado del usuario autenticado y el token.
  *
- * @param {object} props - Propiedades del componente.
- * @param {ReactNode} props.children - Elementos hijos que se incluirán dentro del proveedor.
- * @returns {JSX.Element} El proveedor de contexto de autenticación que encapsula la aplicación.
- *
- * @example
- * // Ejemplo de uso en un componente de la aplicación
- * import { AuthProvider } from "../context/AuthProvider";
- *
- * function App() {
- *   return (
- *     <AuthProvider>
- *       <MiAplicacion />
- *     </AuthProvider>
- *   );
- * }
+ * @constant {React.Context<AuthContextType | undefined>} AuthContext
  */
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+/**
+ * Proveedor de autenticación que gestiona las funciones de login, registro, logout, y operaciones CRUD para materias primas y alimentos.
+ *
+ * @function AuthProvider
+ * @param {ReactNode} children - Elementos secundarios que recibirán acceso al contexto.
+ * @returns {JSX.Element} El componente proveedor de autenticación.
+ */
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
@@ -74,6 +65,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     };
   }, []);
 
+  /**
+   * Carga el usuario autenticado y el token desde las cookies.
+   * Si no existe, realiza una llamada para obtener los datos del usuario.
+   */
   const loadUser = async () => {
     const storedToken = Cookies.get("token");
     const storedUser = Cookies.get("user");
@@ -97,6 +92,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  /**
+   * Realiza una petición para obtener los datos del usuario autenticado.
+   *
+   * @param {string} authToken - Token de autenticación.
+   */
   const fetchUserData = async (authToken: string) => {
     try {
       const response = await fetch("/api/user", {
@@ -119,6 +119,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  /**
+   * Realiza el proceso de login del usuario, guardando el token y los datos del usuario en cookies.
+   *
+   * @param {string} email - Correo del usuario.
+   * @param {string} password - Contraseña del usuario.
+   * @throws {Error} Si ocurre un error en el login.
+   */
   const login = async (email: string, password: string) => {
     try {
       const response = await fetch("/api/login", {
@@ -146,6 +153,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  /**
+   * Realiza el proceso de registro del usuario y redirige al login.
+   *
+   * @param {string} name - Nombre del usuario.
+   * @param {string} lastName - Apellido del usuario.
+   * @param {string} email - Correo del usuario.
+   * @param {string} password - Contraseña del usuario.
+   * @throws {Error} Si ocurre un error en el registro.
+   */
   const register = async (
     name: string,
     lastName: string,
@@ -177,6 +193,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  /**
+   * Realiza el logout del usuario, eliminando el token y redirigiendo a la página principal.
+   */
   const logout = () => {
     setUser(null);
     setToken(null);
@@ -184,6 +203,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     router.push("/");
   };
 
+  /**
+   * Agrega una nueva materia prima mediante una petición autenticada.
+   *
+   * @param {RawMaterial} rawMaterial - Materia prima a agregar.
+   * @returns {Promise<any>} Respuesta de la operación.
+   * @throws {Error} Si ocurre un error al agregar la materia prima.
+   */
   const addRawMaterial = async (rawMaterial: RawMaterial) => {
     const currentToken = token || Cookies.get("token");
     if (!currentToken) {
@@ -213,6 +239,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  /**
+   * Elimina una materia prima mediante una petición autenticada.
+   *
+   * @param {string} id - ID de la materia prima a eliminar.
+   * @returns {Promise<any>} Respuesta de la operación.
+   * @throws {Error} Si ocurre un error al eliminar la materia prima.
+   */
   const deleteRawMaterial = async (id: string) => {
     const currentToken = token || Cookies.get("token");
     if (!currentToken) {
@@ -242,6 +275,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  /**
+   * Obtiene todas las materias primas.
+   *
+   * @returns {Promise<RawMaterial[]>} Lista de materias primas.
+   * @throws {Error} Si ocurre un error al obtener las materias primas.
+   */
   const getAllRawMaterials = async (): Promise<RawMaterial[]> => {
     const currentToken = token || Cookies.get("token");
     if (!currentToken) {
@@ -268,6 +307,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  /**
+   * Obtiene una materia prima específica por su ID.
+   *
+   * @param {string} id - ID de la materia prima a obtener.
+   * @returns {Promise<RawMaterial>} Datos de la materia prima.
+   * @throws {Error} Si ocurre un error al obtener la materia prima.
+   */
   const getRawMaterial = async (id: string): Promise<RawMaterial> => {
     const currentToken = token || Cookies.get("token");
     if (!currentToken) {
@@ -294,6 +340,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  /**
+   * Actualiza una materia prima.
+   *
+   * @param {RawMaterial} rawMaterial - Materia prima a actualizar.
+   * @returns {Promise<any>} Respuesta de la operación.
+   * @throws {Error} Si ocurre un error al actualizar la materia prima.
+   */
   const updateRawMaterial = async (rawMaterial: RawMaterial) => {
     const currentToken = token || Cookies.get("token");
     if (!currentToken) {
@@ -326,6 +379,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  /**
+   * Agrega un nuevo alimento mediante una petición autenticada.
+   *
+   * @param {Food} food - Alimento a agregar.
+   * @returns {Promise<any>} Respuesta de la operación.
+   * @throws {Error} Si ocurre un error al agregar el alimento.
+   */
   const addFood = async (food: Food) => {
     const currentToken = token || Cookies.get("token");
     if (!currentToken) {
@@ -355,6 +415,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  /**
+   * Obtiene todos los alimentos.
+   *
+   * @returns {Promise<Food[]>} Lista de alimentos.
+   * @throws {Error} Si ocurre un error al obtener los alimentos.
+   */
   const getAllFoods = async (): Promise<Food[]> => {
     const currentToken = token || Cookies.get("token");
     if (!currentToken) {
@@ -381,6 +447,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  /**
+   * Actualiza un alimento.
+   *
+   * @param {Food} food - Alimento a actualizar.
+   * @returns {Promise<any>} Respuesta de la operación.
+   * @throws {Error} Si ocurre un error al actualizar el alimento.
+   */
   const updateFood = async (food: Food) => {
     const currentToken = token || Cookies.get("token");
     if (!currentToken) {
@@ -410,6 +483,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  /**
+   * Elimina un alimento mediante una petición autenticada.
+   *
+   * @param {string} id - ID del alimento a eliminar.
+   * @returns {Promise<any>} Respuesta de la operación.
+   * @throws {Error} Si ocurre un error al eliminar el alimento.
+   */
   const deleteFood = async (id: string) => {
     const currentToken = token || Cookies.get("token");
     if (!currentToken) {
@@ -463,6 +543,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   );
 };
 
+/**
+ * Hook personalizado para acceder al contexto de autenticación.
+ *
+ * @function useAuth
+ * @throws {Error} Si el hook se utiliza fuera de un AuthProvider.
+ * @returns {AuthContextType} El contexto de autenticación.
+ */
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {

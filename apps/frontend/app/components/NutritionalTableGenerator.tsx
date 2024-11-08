@@ -39,7 +39,8 @@ export default function NutritionalTableGenerator() {
         0
       );
       const totalFreeWater = food.ingredients.reduce(
-        (sum, ingredient) => sum + ingredient.rawMaterial.water*ingredient.amount,
+        (sum, ingredient) =>
+          sum + (ingredient.rawMaterial.water ?? 0) * ingredient.amount,
         0
       );
 
@@ -47,7 +48,8 @@ export default function NutritionalTableGenerator() {
         const rawMaterial = ingredient.rawMaterial as RawMaterial;
         const amount = ingredient.amount;
         const ratio = amount / totalWeight;
-        const NutrientInDry = (rawMaterial.water * amount)/totalFreeWater +1;
+        const NutrientInDry =
+          ((rawMaterial.water ?? 0) * amount) / totalFreeWater + 1;
 
         Object.entries(rawMaterial).forEach(([key, value]) => {
           if (typeof value === "number" && key !== "id" && key !== "_id") {
@@ -56,15 +58,25 @@ export default function NutritionalTableGenerator() {
             }
             calculatedData[key].per100g += value * ratio * NutrientInDry;
             calculatedData[key].perServing +=
-              (value * ratio * NutrientInDry* servingSize) / 100;
+              (value * ratio * NutrientInDry * servingSize) / 100;
           }
         });
       });
 
       Object.keys(calculatedData).forEach((key) => {
-        if (key == "calories"){
-          calculatedData[key].per100g = 9*calculatedData.totalFats?.per100g + 4*calculatedData.proteins?.per100g + 4*calculatedData.carbohydrates?.per100g -2*calculatedData.dietaryFiber?.per100g;
-          calculatedData[key].perServing = 9*calculatedData.totalFats?.perServing + 4*calculatedData.proteins?.perServing+ 4*calculatedData.carbohydrates?.perServing -2*calculatedData.dietaryFiber?.perServing;
+        if (key == "calories") {
+          if (calculatedData[key]) {
+            calculatedData[key].per100g =
+              9 * (calculatedData.totalFats?.per100g ?? 0) +
+              4 * (calculatedData.proteins?.per100g ?? 0) +
+              4 * (calculatedData.carbohydrates?.per100g ?? 0) -
+              2 * (calculatedData.dietaryFiber?.per100g ?? 0);
+            calculatedData[key].perServing =
+              9 * (calculatedData.totalFats?.perServing ?? 0) +
+              4 * (calculatedData.proteins?.perServing ?? 0) +
+              4 * (calculatedData.carbohydrates?.perServing ?? 0) -
+              2 * (calculatedData.dietaryFiber?.perServing ?? 0);
+          }
         }
         if (calculatedData[key]) {
           calculatedData[key].per100g = Number(
