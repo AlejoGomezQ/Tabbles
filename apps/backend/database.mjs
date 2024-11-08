@@ -1,5 +1,13 @@
 import mongoose from "mongoose";
 
+/**
+ * Clase para gestionar la conexión a la base de datos MongoDB utilizando Mongoose.
+ *
+ * Esta clase proporciona un método para conectar a la base de datos MongoDB solo una vez, asegurando
+ * que la conexión se realice de manera eficiente y manejando errores si la conexión falla.
+ *
+ * @class
+ */
 class Database {
   constructor() {
     this.connection = null;

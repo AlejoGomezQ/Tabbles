@@ -10,7 +10,26 @@ import {
 
 import { createUser, login } from "../controllers/UsersController.mjs";
 import { authenticateToken } from "../middleware/auth.mjs";
-import { createFood, getAllFoods ,updateFood, deleteFood} from "../controllers/FoodsController.mjs";
+import {
+  createFood,
+  getAllFoods,
+  updateFood,
+  deleteFood,
+} from "../controllers/FoodsController.mjs";
+
+/**
+ * Configuración de rutas para el servidor Express que manejan operaciones relacionadas con materias primas, alimentos y usuarios.
+ *
+ * Este archivo define un conjunto de rutas para realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre materias primas y alimentos.
+ * Además, permite la creación y autenticación de usuarios. Todas las rutas están protegidas por un middleware de autenticación de token.
+ *
+ * @module routes/tabblesRoutes
+ *
+ * @example
+ * // Ejemplo de cómo se utiliza esta configuración de rutas en un servidor Express.
+ * import tabblesRoutes from './routes/tabblesRoutes.mjs';
+ * app.use('/api/tabbles-tables', tabblesRoutes); // Se integran las rutas en la aplicación Express.
+ */
 const router = Router();
 
 router.use(authenticateToken);

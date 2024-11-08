@@ -1,5 +1,26 @@
 import mongoose from "mongoose";
 
+/**
+ * Esquema de Mongoose para el modelo de "RawMaterial" (Materia Prima).
+ *
+ * Este esquema define la estructura y las restricciones de los documentos de materias primas almacenados en la base de datos MongoDB.
+ * Cada materia prima tiene un nombre único, una serie de propiedades nutricionales, y está asociada a un usuario.
+ *
+ * @module models/RawMaterial
+ *
+ * @example
+ * // Ejemplo de uso del modelo RawMaterial
+ * import RawMaterial from './models/RawMaterial.mjs';
+ * const nuevaMateriaPrima = new RawMaterial({
+ *   name: 'Tomato',
+ *   calories: 18,
+ *   proteins: 0.9,
+ *   totalFats: 0.2,
+ *   carbohydrates: 3.9,
+ *   user: 'userId'
+ * });
+ * nuevaMateriaPrima.save().then(() => console.log('Materia prima creada exitosamente'));
+ */
 const RawMaterialSchema = new mongoose.Schema(
   {
     id: {
