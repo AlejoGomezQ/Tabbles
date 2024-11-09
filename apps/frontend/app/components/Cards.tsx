@@ -16,8 +16,8 @@ export default function Cards() {
             Genera tablas nutricionales en varios formatos con solo un clic
           </h3>
           <p className="text-[#195e4b] text-opacity-90">
-            Obtén tablas nutricionales detalladas en PDF, Excel o formatos
-            personalizados para tus necesidades específicas.
+            Obtén tablas nutricionales detalladas en PDF, en español, ingles o
+            ambos para tus necesidades específicas.
           </p>
         </div>
       </section>

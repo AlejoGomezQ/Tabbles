@@ -65,7 +65,16 @@ export default function NutritionalTable({
   const generatePDF = () => {
     const element = document.getElementById("nutritional-table");
     if (element) {
-      html2pdf().from(element).save("tabla_nutricional.pdf");
+      html2pdf()
+        .set({
+          margin: 1.5,
+          filename: "tabla_nutricional.pdf",
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+        })
+        .from(element)
+        .save();
     }
   };
 
@@ -87,30 +96,28 @@ export default function NutritionalTable({
     const unit = getUnit(key);
     const bold = [
       "calories",
-      "totalFats",
-      "carbohydrates",
-      "proteins",
-    ].includes(key);
-    const indent = [
-      "saturatedFats",
+      "saturedFats",
       "transFat",
-      "dietaryFiber",
-      "sugar",
+      "sodium",
       "addedSugar",
     ].includes(key);
+
+    const border = ["calories", "sodium"].includes(key);
+
+    const borderR = ["calories"].includes(key);
 
     return (
       <tr
         key={key}
-        className={`border-b border-black ${bold ? "font-bold" : ""} ${
-          indent ? "pl-4" : ""
-        }`}
+        className={`border-b border-black px-4 ${bold ? "font-bold" : ""} ${border ? "border-b-4 border-black" : ""}`}
       >
-        <td className={`py-2 ${indent ? "pl-4" : ""}`}>{getLabel(key)}</td>
-        <td className="text-right">
+        <td className={`py-2 pl-4 ${borderR ? "border-r border-black" : ""}`}>
+          {getLabel(key)}
+        </td>
+        <td className="text-right pr-4">
           {value.per100g.toFixed(2)} {unit}
         </td>
-        <td className="text-right">
+        <td className="text-right pr-4">
           {value.perServing.toFixed(2)} {unit}
         </td>
       </tr>
@@ -121,9 +128,9 @@ export default function NutritionalTable({
     <section className="lg:w-1/2 p-10">
       <div
         id="nutritional-table"
-        className="max-w-3xl mx-auto mb-10 border border-black"
+        className="max-w-3xl mx-auto m-7 border border-black"
       >
-        <h2 className="text-2xl font-bold border-b border-black text-center">
+        <h2 className="text-2xl font-bold border-b border-black text-center py-2">
           {format === "english"
             ? "Nutrition Facts"
             : format === "both"
@@ -134,7 +141,7 @@ export default function NutritionalTable({
           <table className="w-full border-collapse">
             <thead>
               <tr className="border-b border-black">
-                <th colSpan={3} className="text-left p-2">
+                <th colSpan={3} className="text-left p-2 font-normal">
                   {format === "english"
                     ? `Serving Size: ${servingSize}g`
                     : format === "both"
@@ -142,8 +149,8 @@ export default function NutritionalTable({
                       : `Tamaño de porción: ${servingSize}g`}
                 </th>
               </tr>
-              <tr className="border-b-2 border-black">
-                <th colSpan={3} className="text-left p-2">
+              <tr className="border-b-4 border-black">
+                <th colSpan={3} className="text-left p-2 font-normal">
                   {format === "english"
                     ? `Servings Per Container: ${servingsPerContainer}`
                     : format === "both"
@@ -151,16 +158,16 @@ export default function NutritionalTable({
                       : `Porciones por envase: ${servingsPerContainer}`}
                 </th>
               </tr>
-              <tr className="border-b border-black">
+              <tr>
                 <th className="text-left py-2"></th>
-                <th className="text-right py-2 border-x border-black">
+                <th className="text-right pr-4 py-2 border-x border-b border-black font-normal">
                   {format === "english"
                     ? "Per 100g"
                     : format === "both"
                       ? "Por 100g / Per 100g"
                       : "Por 100g"}
                 </th>
-                <th className="text-right py-2">
+                <th className="text-right pr-4 py-2 font-normal border-b border-black">
                   {format === "english"
                     ? "Per Serving"
                     : format === "both"
